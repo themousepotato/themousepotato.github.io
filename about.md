@@ -13,6 +13,6 @@ I kill my free time mostly by watching movies, listening to music and learning n
 
 Interested in talking about anything? Ping me in any of the following social networks. I would love to have an interesting talk.
 
-## Contact me
+## contact me
 
-[navaneeths1998@gmail.com](mailto:navaneeths1998@gmail.com)
+[navaneeth@iitkgp.ac.in](mailto:navaneeth@iitkgp.ac.in)
