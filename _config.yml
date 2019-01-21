@@ -21,8 +21,8 @@ bing_verification:
 
 # Optional features
 animated:             false
-show_related_posts:   true
-show_post_footers:    true
+show_related_posts:   false
+show_post_footers:    false
 show_social_icons:    false
 ajaxify_contact_form: false
 enable_mathjax: false
@@ -65,17 +65,17 @@ telegram_username:
 vk_id:
 
 # Post sharing icons
-show_sharing_icons: true
+show_sharing_icons: false
 # Change to 'true' to enable individual icons
 share_facebook: false
-share_twitter: true
-share_googleplus: true
-share_linkedin: true
+share_twitter: false
+share_googleplus: false
+share_linkedin: false
 share_digg: false
 share_tumblr: false
-share_reddit: true
+share_reddit: false
 share_stumbleupon: false
-share_hackernews: true
+share_hackernews: false
 
 text:
   pagination:
@@ -101,13 +101,13 @@ text:
   contact:
     email:    'Email Address'
     content:  'What would you like to say?'
-    subject:  'Hey there'
+    subject:  'Greetings'
     submit:   'ping me'
     ajax:
       sending:  'sending..'
-      sent:     'Hurray! Message sent.'
+      sent:     'Message sent!'
       error:    'Error!'
-  thanks: 'Your ping is on the way. I'll receive it as soon as I open my lappy.'
+  thanks: 'Thanks for contacting. I will reply as soon as possible.'
   og_locale: 'en_US'
 
 # Build settings

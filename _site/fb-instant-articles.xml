@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title></title>
+    <link>http://localhost:4000</link>
+    <description>
+      themousepotato
+    </description>
+    
+        
+            <item>
+                <title>How I spent May 2018 on learning Databases</title>
+                <link>http://localhost:4000/2018/06/01/how-i-spent-may-2018-on-learning-databases/</link>
+                <content:encoded>
+                    <![CDATA[
+                    <p>Databases are the backbone of any software (credits: <a href="https://github.com/DefCon-007">@DefCon-007</a>). But, it took a lot of time for me to understand this. I never understood the exact differences between using a spreadsheet for storing details and a RDBMS before. So, I started to study databases in depth.</p>
+
+<h2 id="how-i-spent-may-2018-on-learning-databases">How I spent May 2018 on learning Databases</h2>
+<hr />
+<h3 id="understanding-concepts">Understanding concepts</h3>
+<p><img src="https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/database-design.png" alt="Database Design" /></p>
+
+<p>Prerequisites are necessary before diving into a specific technology. I had MySQL in my 10+2 syllabus and I mugged the queries without having a deep understanding on the concepts of SQL. I do know how to write queries to get some specific data but, I had no idea about database design at that time.</p>
+
+<p>As recommended by <a href="https://github.com/ghostwriternr/">@ghostwriternr</a>, I started watching a set of video tutorials on Database Design by Caleb Curry <a href="https://www.youtube.com/watch?v=e7Pr1VgPK4w&amp;index=1&amp;list=PLlTjty5ceOnd-sCYEHlFO0JRg2liaFvxv">here</a>. I found this guy as super cool and highly contented. He explains each and every concepts in depth in a beginner friendly manner. I can’t even call it a lecture. It’s like your best friend teaching you a night before end sems. Very very user-friendly and informative.</p>
+
+<p>I got a clear idea about the things to be taken care of while designing databases. Throughout this course, he keep on talking about Data Integrity and reducing Data Redundancy. Lack of them may lead to wrong results on executing queries. Breaking data into Atomic values is also a good practice. He also briefly talks about SQL queries and specific filters. He explains each concepts with proper examples which can easily make us grasp. After watching his videos you won’t be actually implementing anything but, will have a deeper understanding on RDBMS. Nobody can do this course without recommending to others.</p>
+
+<h3 id="peek-into-nosql-through-mongodb">Peek into NoSQL through MongoDB</h3>
+<p>I was in a mood to apply the concepts that I’ve learnt in Caleb’s course. So, do I need to start with SQL again? I asked myself. Nope. I’ve seen MongoDB in many CVs and it has recently been a buzzword. I started to learn it from the official courses as recommended by <a href="https://github.com/icyflame">@icyflame</a>. I visited the MongoDB University <a href="https://university.mongodb.com/">website</a> and selected the intro <a href="https://university.mongodb.com/mercury/M001/2018_May">course</a>. It started on May 15 and suppose to end on June 5. They update their resources on weekly basis so that you can have plenty of time on experimenting yourselves and enough time to chill. The syllabus includes:</p>
+
+<p><img src="https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/mongo-syllabus.png" alt="Syllabus of course" /></p>
+
+<p>One of the major differences that I’ve found in MongoDB with SQL is it uses JSON files for storage which is cute. BSON(Binary JSON) if you want encryption. Also, it is not necessary for a database to have a fixed schema. This one will throw away the concepts of Views in SQL. In case you want to select particular fields, you can create a Projection in MongoDB. There are various operators and filters in MongoDB which makes it powerful to use. Instead of DDL and DML commands in SQL, MongoDB has CRUD operations. We can either use MongoDB Compass or Mongo Shell to execute our queries.</p>
+
+<p>MongoDB Compass:</p>
+
+<p><img src="https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/mongodb-compass.png" alt="MongoDB Compass" /></p>
+
+<p>Have a look at Mongo Shell:</p>
+
+<p><img src="https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/mongo-shell.png" alt="Mongo Shell" /></p>
+
+<p>Mostly I was using the Mongo Shell. It is a powerful Javascript interpreter. I created a sandbox atlas cluster for my own experiments which had 512 MB of space and free of cost even though the course had a class cluster by default for learning purpose. The class cluster contained databases which included almost 2 million documents. eg: It contained a video database with a movie collection, a weather database, etc. I explored the huge data throgh MongoDB Compass which is the GUI tool for MongoDB. After connecting to a cluster, it allows us to do all CRUD operations and browse the huge database.</p>
+
+<p>In case you are familiar with MongoDB, here is a problem for you.</p>
+
+<p><img src="https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/mongo-problem.png" alt="MongoDB Problem" /></p>
+
+<p>Here is my progess in the course:</p>
+
+<p><img src="https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/mongo-progress.png" alt="Progress" /></p>
+
+<p>At last certificate:</p>
+
+<p><img src="https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/mongo-certificate.png" alt="(Certificate on June 5th)" /></p>
+
+<p>If you are planning to learn MongoDB, don’t forget to do this course. It’ll give you a good idea on MongoDB AFAIK.</p>
+
+
+                    ]]>
+                </content:encoded>
+                <guid isPermaLink="false">/2018/06/01/how-i-spent-may-2018-on-learning-databases/</guid>
+                <description>
+                    
+                </description>
+                <pubDate>Fri, 01 Jun 2018 00:00:00 +0530</pubDate>
+                <author>Navaneeth Suresh</author>
+            </item>
+        
+    
+        
+            <item>
+                <title>5 Myths about dual booting</title>
+                <link>http://localhost:4000/2018/05/14/5-myths-about-dual-booting/</link>
+                <content:encoded>
+                    <![CDATA[
+                    <p>Dual booting a GNU/Linux distro with either Windows or Mac is an important step before ditching them. Don’t worry. Just kidding! It’s all up to you. Here, we’ll talk about 5 myths that are popular among the non-GNU/Linux users.</p>
+
+<h2 id="5-myths-about-dual-booting">5 Myths about dual booting</h2>
+<hr />
+<h3 id="1-system-will-slow-down">1. System will slow down!</h3>
+<p><img src="https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/slow-computer.png" alt="Slow computer" />
+Surely, you must be kidding. Dual booting has nothing to do with your RAM. Only hard disk is being partitioned. You can allocate desired size to your partitions. It’s all in your hands.</p>
+
+<h3 id="2-process-is-too-complex">2. Process is too complex!</h3>
+<p><img src="https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/complex.jpg" alt="Too complex process" />
+This is another one. If you aren’t a sysadmin, stay away from all these crap that affect your hard disk directly. Shut up! It is true that installing a distro alongside with your default one is not simple as a beginner. But, it’s not too complex or difficult to understand. If you find some time to learn new stuff, enthusiastic enough to break rules and have some courage to experiment, then you are welcome. Today there are several tutorials available to all type of users. It doesn’t matter whether you are a beginner, a noob or whatever.</p>
+
+<h3 id="3-highly-prone-to-driver-issues">3. Highly prone to driver issues!</h3>
+<p><img src="https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/error.png" alt="Error" />
+Many of my friends complain that after dual booting they came across problems like “wifi stopped working”, “printers stopped working”, etc. It happens sometimes. But, there is a holy grail for each and every problem of you. You can report bugs at discussion groups like StackOverflow. Often by a Google search you will get a link to the solution from a discussion group without even asking it by yourself. Try executing the mentioned solutions only by counting the upvotes is the corresponding discussion site. You may have to find some time to fix those issues. But, believe me at last you’ll learn something new for sure.</p>
+
+<h3 id="4-battery-drains-too-fast">4. Battery drains too fast!</h3>
+<p><img src="https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/battery-drain.jpg" alt="Battery drain comic" />
+This is very funny. People often complain that their laptop’s battery drains too fast on using a GNU/Linux distro even with a single booted system. This is not true per se. If you are facing such issues, try installing some system monitoring programs. Stacer is one of them. You can disable the processes that you don’t require using these apps. They’ll show you the current running status graphically. You can easily understand which one is unnecessarily consuming your battery which you’ll be hardly using. For example, the bluetooth will be on by default. It consumes a lot of power.</p>
+
+<p>This command is also worth giving a shot:</p>
+<blockquote>
+  <p>$ sudo apt-get install tlp &amp;&amp; sudo tlp start</p>
+</blockquote>
+
+<h3 id="5-takes-time-to-boot">5. Takes time to boot!</h3>
+<p><img src="https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/long-time.jpg" alt="Too time taking process" />
+Some devices will force you to disable Fast boot option in Windows for a successful dual boot. This has nothing to do with the new distro. It’s all decided by the Windows people. We cannot change that as long as they are proprietary.</p>
+
+
+                    ]]>
+                </content:encoded>
+                <guid isPermaLink="false">/2018/05/14/5-myths-about-dual-booting/</guid>
+                <description>
+                    
+                </description>
+                <pubDate>Mon, 14 May 2018 00:00:00 +0530</pubDate>
+                <author>Navaneeth Suresh</author>
+            </item>
+        
+    
+        
+            <item>
+                <title>An introduction to deployable robotics</title>
+                <link>http://localhost:4000/2018/04/11/ros-docker/</link>
+                <content:encoded>
+                    <![CDATA[
+                    <p>Apps developed using the Robotic Operating System can be made repeatable and reproducible. Why don’t we make them deployable? Docker is a tool designed to make it easier to create, deploy, and run applications by using containers. Let’s ship our ROS app using Docker containers.</p>
+
+<h2 id="deploying-ros-apps-using-docker">Deploying ROS apps using Docker</h2>
+<hr />
+<h3 id="what-is-docker-">What is Docker ?</h3>
+<p>Docker is a tool designed to make it easier to create, deploy, and run applications by using containers. Containers allow a developer to package up an application with all of the parts it needs, such as libraries and other dependencies, and ship it all out as one package. By doing so, thanks to the container, the developer can rest assured that the application will run on any other Linux machine regardless of any customized settings that machine might have that could differ from the machine used for writing and testing the code.</p>
+
+<p>Unlike a virtual machine, rather than creating a whole virtual operating system, Docker allows applications to use the same Linux kernel as the system that they’re running on and only requires applications be shipped with things not already running on the host computer. This gives a significant performance boost and reduces the size of the application.</p>
+
+<h3 id="why-deploy-ros-apps">Why deploy ROS apps?</h3>
+<p>Apps developed using the Robotic Operating System can be made repeatable and reproducible. Why don’t we make them deployable? Let’s go through some hardware drivers which want to use ROS tools. They includes cameras, depth cameras, laser cameras, robots, audio, inertial units, GPS, joysticks. Sounds cool :stuck_out_tongue_winking_eye: !</p>
+
+<p>There are variety of ROS ecosystems also. Have a look at them.</p>
+
+<p><img src="https://raw.githubusercontent.com/TheMousePotato/ROSAppsDeployment/master/images/ecosyss.png" alt="ROS ecosystems" /></p>
+
+<p>Let’s try to combine our areas of interest. First have a look at a normal software development environment matrix.</p>
+
+<p><img src="https://github.com/TheMousePotato/ROSAppsDeployment/raw/master/images/matrix1.png" alt="Software development matrix" /></p>
+
+<p>Now, see how the robotics development progress in a matrix:</p>
+
+<p><img src="https://github.com/TheMousePotato/ROSAppsDeployment/raw/master/images/matrix2.png" alt="Robotics development matrix" /></p>
+
+<p>Yuck! Too complex? Time has come to re-invent the convensional approach. The cool thing about docker is that a container has no need to account for the changes in another container. Let’s try to make it simpler to understand. I’m maintaining a container for running apps required for joystick(say). My friend does that for camera. Then, my friend don’t need to bother about dependencies for running my joystick apps. In the same way, I don’t have to keep track of his development. So, I only need to install the libraries for my peripheral and so as my friend. If we are not deploying it using containers, then we have to work on a single space with all the packages installed. The worst thing about this non-deployable robotics is we have to commit each and every update for the libraries unnecessarily. We need to look after the libraries which we have no point of interest. Through containers, things get more simplification. Now the interesting thing comes to action. Our peripherals can still communicate. How? Each container has got an IP address and Docker act as a pathway and provides several network topologies to connect our nodes. Wow! Let’s see it in action.</p>
+
+<h3 id="how-to-use-docker-to-ship-ros-apps">How to use Docker to ship ROS apps?</h3>
+<p>As we have learnt to make things easier so far, let’s try to implement it step by step. Links to installation and proxy setup for Docker are given in the end of this documentation. After that, let’s start.</p>
+
+<h4 id="volumes">Volumes</h4>
+<p>By default Docker uses <code class="highlighter-rouge">/root/.ros/</code> directory to keep track of the logs and debugging info. If you want to change it to your home directory(say ‘ubuntu’), perform :</p>
+
+<blockquote>
+  <p>$ docker run -v “/home/ubuntu/.ros/:/root/.ros/” ros</p>
+</blockquote>
+
+<h4 id="devices">Devices</h4>
+<p>Some application may require device access for acquiring images from connected cameras, control input from human interface device, or GPUS for hardware acceleration. This can be done using the –device run argument to mount the device inside the container, providing processes inside hardware access.</p>
+
+<h4 id="networks">Networks</h4>
+<p>Although one process per container is recommended, Docker networks can also be extended to use several running ROS apps. See documentation on <a href="http://wiki.ros.org/ROS/NetworkSetup">NetworkSetup</a>.</p>
+
+<h3 id="start-by-an-example">Start by an example</h3>
+<p>For the communication between our ROS nodes, there should be a virtual network. In this short example, we’ll create a virtual network, spin up a new container running roscore advertised as the master service on the new network, then spawn a message publisher and subscriber process as services on the same network.</p>
+
+<h4 id="build-image">Build image</h4>
+
+<blockquote>
+  <p>Build a ROS image that includes ROS tutorials using this <code class="highlighter-rouge">Dockerfile</code>:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM ros:indigo-ros-base
+# install ros tutorials packages
+RUN apt-get update &amp;&amp; apt-get install -y \
+    ros-indigo-ros-tutorials \
+    ros-indigo-common-tutorials \
+    &amp;&amp; rm -rf /var/lib/apt/lists/
+</code></pre></div></div>
+
+<blockquote>
+  <p>Then to build the image from within the same directory:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build --tag ros:ros-tutorials .
+</code></pre></div></div>
+
+<h4 id="create-network">Create network</h4>
+
+<blockquote>
+  <p>To create a new network foo, we use the network command:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker network create foo
+</code></pre></div></div>
+
+<blockquote>
+  <p>Now that we have a network, we can create services. Services advertise there location on the network, making it easy to resolve the location/address of the service specific container. We’ll use this make sure our ROS nodes can find and connect to our ROS master.</p>
+</blockquote>
+
+<h4 id="run-services">Run services</h4>
+
+<blockquote>
+  <p>To create a container for the ROS master and advertise it’s service:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run -it --rm \
+    --net foo \
+    --name master \
+    ros:ros-tutorials \
+    roscore
+</code></pre></div></div>
+
+<blockquote>
+  <p>Now you can see that master is running and is ready manage our other ROS nodes. To add our talker node, we’ll need to point the relevant environment variable to the master service:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker run -it --rm \
+    --net foo \
+    --name talker \
+    --env ROS_HOSTNAME=talker \
+    --env ROS_MASTER_URI=http://master:11311 \
+    ros:ros-tutorials \
+    rosrun roscpp_tutorials talker
+</code></pre></div></div>
+
+<blockquote>
+  <p>Then in another terminal, run the listener node similarly:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker run -it --rm \
+    --net foo \
+    --name listener \
+    --env ROS_HOSTNAME=listener \
+    --env ROS_MASTER_URI=http://master:11311 \
+    ros:ros-tutorials \
+    rosrun roscpp_tutorials listener
+</code></pre></div></div>
+
+<blockquote>
+  <p>Alright! You should see listener is now echoing each message the talker broadcasting. You can then list the containers and see something like this:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker service ls
+SERVICE ID          NAME                NETWORK             CONTAINER
+67ce73355e67        listener            foo                 a62019123321
+917ee622d295        master              foo                 f6ab9155fdbe
+7f5a4748fb8d        talker              foo                 e0da2ee7570a
+</code></pre></div></div>
+
+<blockquote>
+  <p>And for the services:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker ps
+CONTAINER ID        IMAGE               COMMAND                CREATED              STATUS              PORTS               NAMES
+a62019123321        ros:ros-tutorials   "/ros_entrypoint.sh    About a minute ago   Up About a minute   11311/tcp           listener
+e0da2ee7570a        ros:ros-tutorials   "/ros_entrypoint.sh    About a minute ago   Up About a minute   11311/tcp           talker
+f6ab9155fdbe        ros:ros-tutorials   "/ros_entrypoint.sh    About a minute ago   Up About a minute   11311/tcp           master
+</code></pre></div></div>
+
+<h4 id="introspection">Introspection</h4>
+
+<blockquote>
+  <p>Ok, now that we see the two nodes are communicating, let get inside one of the containers and do some introspection what exactly the topics are:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker exec -it master bash
+  source /ros_entrypoint.sh
+</code></pre></div></div>
+
+<blockquote>
+  <p>If we then use rostopic to list published message topics, we should see something like this:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  rostopic list
+/chatter
+/rosout
+/rosout_agg
+</code></pre></div></div>
+
+<h4 id="tear-down">Tear down</h4>
+
+<blockquote>
+  <p>To tear down the structure we’ve made, we just need to stop the containers and the services. We can stop and remove the containers using Ctrl^C where we launched the containers or using the stop command with the names we gave them:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker stop master talker listener
+  docker rm master talker listener
+</code></pre></div></div>
+
+<h4 id="compose">Compose</h4>
+
+<blockquote>
+  <p>Now that you have an appreciation for bootstrapping a distributed ROS example manually, lets try and automate it using docker-compose.</p>
+</blockquote>
+
+<blockquote>
+  <p>Start by making a folder named rostutorials and moving the Dockerfile we used earlier inside this directory. Then create a yaml file named docker-compose.yml in the same directory and paste the following inside:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version: '2'
+services:
+  master:
+    build: .
+    container_name: master
+    command:
+      - roscore
+  
+  talker:
+    build: .
+    container_name: talker
+    environment:
+      - "ROS_HOSTNAME=talker"
+      - "ROS_MASTER_URI=http://master:11311"
+    command: rosrun roscpp_tutorials talker
+  
+  listener:
+    build: .
+    container_name: listener
+    environment:
+      - "ROS_HOSTNAME=listener"
+      - "ROS_MASTER_URI=http://master:11311"
+    command: rosrun roscpp_tutorials listener
+</code></pre></div></div>
+<blockquote>
+  <p>Now from inside the same folder, use docker-copose to launch our ROS nodes and specify that they coexist on their own network:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker-compose up -d
+</code></pre></div></div>
+
+<blockquote>
+  <p>Notice that a new network named rostutorials_default has now been created, you can inspect it further with:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker network inspect rostutorials_default
+</code></pre></div></div>
+
+<blockquote>
+  <p>We can monitor the logged output of each service, such as the listener node like so:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker-compose logs listener
+</code></pre></div></div>
+
+<blockquote>
+  <p>Finally, we can stop and remove all the relevant containers using docker-copose from the same directory:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker-compose stop
+  docker-compose rm
+</code></pre></div></div>
+
+<blockquote>
+  <p>Note: the auto-generated network, rostutorials_default, will persist over the life of the docker engine or until you explicitly remove it using docker network rm.</p>
+</blockquote>
+
+<h3 id="conclusion">Conclusion</h3>
+<p>Let’s have a look at a funny cartoon on convensional approach on robotics.</p>
+
+<p><img src="https://github.com/TheMousePotato/ROSAppsDeployment/raw/master/images/cartoon2.jpg" alt="Cartoon making fun of convensional robotics" /></p>
+
+<p>Now, see how it has changed.</p>
+
+<p><img src="https://github.com/TheMousePotato/ROSAppsDeployment/raw/master/images/simplify.png" alt="Image of deployable robotics" /></p>
+
+<h3 id="some-ros-apps-shipped-using-docker">Some ROS apps shipped using Docker</h3>
+<ul>
+  <li><a href="https://github.com/ruffsl/ros_caffe/tree/master/docker">Caffe</a></li>
+  <li><a href="https://github.com/ruffsl/gazebo_docker_demos">Gazemo demos</a></li>
+</ul>
+
+<h3 id="reference-and-further-reading">Reference and further reading</h3>
+<ul>
+  <li><a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04">Docker for beginners - tutorial by DigitalOcean</a></li>
+  <li><a href="https://github.com/wsargent/docker-cheat-sheet">Docker cheatsheet</a></li>
+  <li><a href="https://stackoverflow.com/questions/23111631/cannot-download-docker-images-behind-a-proxy">Configuring network proxy for using Docker</a></li>
+  <li><a href="https://registry.hub.docker.com/_/ros/">Official Docker library for ROS</a></li>
+  <li><a href="https://docs.docker.com/samples/library/ros/">Official documentation from Docker on ROS</a></li>
+  <li><a href="http://wiki.ros.org/docker">Official documentation from ROS on Docker</a></li>
+  <li><a href="https://www.osrfoundation.org/">Official website of Open Robotics</a></li>
+  <li><a href="https://rosorg.slack.com/messages/docker/">Docker on ROS slack channel</a></li>
+  <li><a href="http://answers.ros.org/questions/scope:all/sort:activity-desc/tags:Docker/page:1/">FAQ on Docker at ROS website</a></li>
+</ul>
+
+
+                    ]]>
+                </content:encoded>
+                <guid isPermaLink="false">/2018/04/11/ros-docker/</guid>
+                <description>
+                    
+                </description>
+                <pubDate>Wed, 11 Apr 2018 00:00:00 +0530</pubDate>
+                <author>Navaneeth Suresh</author>
+            </item>
+        
+    
+  </channel>
+</rss>
