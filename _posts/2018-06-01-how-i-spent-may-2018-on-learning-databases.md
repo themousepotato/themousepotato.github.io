@@ -9,7 +9,7 @@ Databases are the backbone of any software (credits: [@DefCon-007](https://githu
 ## How I spent May 2018 on learning Databases
 ---
 ### Understanding concepts
-![Database Design](https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/database-design.png)
+![Database Design](https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/database-design.png?token=AgXlPvuRwl5vrrlSHm2Ay2AD3m5c6Cfoks5cTxbTwA%3D%3D)
 
 
 Prerequisites are necessary before diving into a specific technology. I had MySQL in my 10+2 syllabus and I mugged the queries without having a deep understanding on the concepts of SQL. I do know how to write queries to get some specific data but, I had no idea about database design at that time.
@@ -21,35 +21,35 @@ I got a clear idea about the things to be taken care of while designing database
 ### Peek into NoSQL through MongoDB
 I was in a mood to apply the concepts that I've learnt in Caleb's course. So, do I need to start with SQL again? I asked myself. Nope. I've seen MongoDB in many CVs and it has recently been a buzzword. I started to learn it from the official courses as recommended by [@icyflame](https://github.com/icyflame). I visited the MongoDB University [website](https://university.mongodb.com/) and selected the intro [course](https://university.mongodb.com/mercury/M001/2018_May). It started on May 15 and suppose to end on June 5. They update their resources on weekly basis so that you can have plenty of time on experimenting yourselves and enough time to chill. The syllabus includes:
 
-![Syllabus of course](https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/mongo-syllabus.png)
+![Syllabus of course](https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongo-syllabus.png?token=AgXlPlZoLyFpNH5K82gxOugNSJptSfAKks5cTxbzwA%3D%3D)
 
 
 One of the major differences that I've found in MongoDB with SQL is it uses JSON files for storage which is cute. BSON(Binary JSON) if you want encryption. Also, it is not necessary for a database to have a fixed schema. This one will throw away the concepts of Views in SQL. In case you want to select particular fields, you can create a Projection in MongoDB. There are various operators and filters in MongoDB which makes it powerful to use. Instead of DDL and DML commands in SQL, MongoDB has CRUD operations. We can either use MongoDB Compass or Mongo Shell to execute our queries.
 
 MongoDB Compass:
 
-![MongoDB Compass](https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/mongodb-compass.png)
+![MongoDB Compass](https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongodb-compass.png?token=AgXlPv8JaRld3ylFK5Z4XwsL3sSyD_F5ks5cTxcJwA%3D%3D)
 
 
 Have a look at Mongo Shell:
 
-![Mongo Shell](https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/mongo-shell.png)
+![Mongo Shell](https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongo-shell.png?token=AgXlPtEHETVfdmQUyVkiYnf6WT8si6K8ks5cTxcdwA%3D%3D)
 
 
 Mostly I was using the Mongo Shell. It is a powerful Javascript interpreter. I created a sandbox atlas cluster for my own experiments which had 512 MB of space and free of cost even though the course had a class cluster by default for learning purpose. The class cluster contained databases which included almost 2 million documents. eg: It contained a video database with a movie collection, a weather database, etc. I explored the huge data throgh MongoDB Compass which is the GUI tool for MongoDB. After connecting to a cluster, it allows us to do all CRUD operations and browse the huge database.
 
 In case you are familiar with MongoDB, here is a problem for you.
 
-![MongoDB Problem](https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/mongo-problem.png)
+![MongoDB Problem](https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongo-problem.png?token=AgXlPnXjlzi0zmrmWzvfA3I3DLCSWkP4ks5cTxcvwA%3D%3D)
 
 
 Here is my progess in the course:
 
-![Progress](https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/mongo-progress.png)
+![Progress](https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongo-progress.png?token=AgXlPowKcYyXWPDjUAutdQI1ICmB1kFvks5cTxdCwA%3D%3D)
 
 At last certificate:
 
-![(Certificate on June 5th)](https://raw.githubusercontent.com/TheMousePotato/themousepotato.github.io/master/images/mongo-certificate.png)
+![(Certificate)](https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongo-certificate.png?token=AgXlPt81BFX4B8oFT8EDihj1v2xEtzHnks5cTxdZwA%3D%3D)
 
 If you are planning to learn MongoDB, don't forget to do this course. It'll give you a good idea on MongoDB AFAIK.
 
