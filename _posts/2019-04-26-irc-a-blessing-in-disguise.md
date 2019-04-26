@@ -4,9 +4,9 @@ title: IRC - A blessing in disguise
 author: Navaneeth Suresh
 ---
 
-![IRC](https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/irc.png)
-
 In this post, I'll explain the misconceptions I had with IRC(Internet Relay Chat) and how I resolved them. This is not going to be a Slack vs IRC post and I won't be talking about good things about either of them. Instead, I'll just say how I got my misconceptions resolved.
+
+![IRC](https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/irc.png)
 
 I used to wonder why people use IRC for communication. I usually use Slack for communication and I love it. The downsides I felt on using IRC with Freenode were:
 
