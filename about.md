@@ -5,7 +5,7 @@ permalink: /about/
 tags: about
 ---
 
-Hola gente! I'm Navaneeth, a sophomore at Indian Institute of Technology, Kharagpur. I'm a free software activist, ML/DL enthusiast and interested in experimenting and learning new stuff from good fellas. Pythonista since programming.
+Hola gente! I'm Navaneeth, a third year undergraduate at Indian Institute of Technology, Kharagpur. I'm a free software activist, ML/DL enthusiast and interested in experimenting and learning new stuff from good fellas. Pythonista since programming.
 
 I am also an Executive Head at Kharagpur Open Source Society, where we organise workshops and events related to open source and programming.
 
