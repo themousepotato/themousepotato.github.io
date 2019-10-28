@@ -12,4 +12,4 @@ I’ve been continuously questioning about my purpose of life these days as reli
 
 When did we start thinking about an aim? Our parents, relatives and teachers planted those thoughts on us. They might didn’t force us. But, unknowingly they wanted us to do things which makes sense to them. We can’t really blame anyone. It’s clear that our thoughts changes with time. When we look back, we may blush at the things we did in high school which we thought would make a serious impact. Some things did and some didn’t.
 
-One thing that I could be really certain about now is that having increased number of aims can shrink our lives really fast. Life is what happens what we do when we’re busy planning about something. Cheers!
+One thing that I could be really certain about now is that having increased number of aims can shrink our lives really fast. Life is what happens when we’re busy planning about something. Cheers!
