@@ -1,6 +1,6 @@
 ---
 layout: post
-title: A counterintuitive thought of having an aim
+title: My counterintuitive thoughts on having an aim
 author: Navaneeth Suresh
 ---
 
