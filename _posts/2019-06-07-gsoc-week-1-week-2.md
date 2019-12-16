@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Week 1 - Week 2
+title: GSoC Week 1 - Week 2
 author: Navaneeth Suresh
 ---
 

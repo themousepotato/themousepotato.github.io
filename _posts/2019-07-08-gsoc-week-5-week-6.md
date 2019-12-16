@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Week 5 - Week 6
+title: GSoC Week 5 - Week 6
 author: Navaneeth Suresh
 ---
 

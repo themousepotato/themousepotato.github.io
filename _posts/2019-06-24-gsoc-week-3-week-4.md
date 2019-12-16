@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Week 3 - Week 4
+title: GSoC Week 3 - Week 4
 author: Navaneeth Suresh
 ---
 
