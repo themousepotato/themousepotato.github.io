@@ -5,7 +5,7 @@ author: Navaneeth Suresh
 ---
 
 You may listen to this while reading.
-<iframe width="500" height="290" src="https://www.youtube.com/embed/9eWewdTkghM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
+<iframe width="500" height="290" src="https://www.youtube.com/embed/9eWewdTkghM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" style="max-width:100%;"></iframe>
 <br/>
 
 Have you ever felt happy for crying? I didn't mean crying being happy. Being happy for the tears that came from sadness. That sounds weird, but it makes sense sometimes. You might want to think about emptiness at this moment and then you'll probably get the context. Have you ever tried so hard to cry when you felt something that kept pushing you inwards from all directions and made your heart heavy, but you couldn't make it as you weren't sad and only empty? That's how emptiness haunts you. Crying for sadness is natural if you can keep the myth of toxic masculinity aside. Instead, what would you do if you don't feel anything? Think of an occasion were you couldn't think of anything per se. This sounds really stupid when I say it. But it happens and it's worse. In this post, I'll try to investigate the source of this emptiness.
