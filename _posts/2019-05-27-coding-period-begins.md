@@ -1,0 +1,29 @@
+---
+title: GSoC - Coding Period begins
+date: 2019-05-27
+permalink: /posts/gsoc-coding-period-begins
+tags:
+  - gsoc
+  - software
+---
+
+The community bonding period had ended on May 26th. I utilized this period to discuss my project even more deeper with the community with my proposed implementations. Unfortunately, my proposed method in my official gsoc proposal had a different approach in the UI level. However, the basic things remain the same. People who are familiar with internals came with suggestions and the methods got changed based on their suggestions. I had a video conference with my mentors and they helped me to have a good kickstart with the project. I spent most of the time reading the codebase and splitting the plan of implementation even deeper.
+
+## About Mercurial
+<span style="float:left;margin-right:10px;margin-bottom:10px;width:40%;height:40%;">
+![Mercurial](https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mercurial-logo.png)
+</span>
+Mercurial ​ is a free, distributed source control management tool. It efficiently handles projects of any size and offers an easy and intuitive interface. Most part of the codebase is written on python. Other than python, it has parts which are written in C and Rust considering performance. It's famous for its feature of scalability. The primary communication channel is #mercurial on IRC. There are mailing lists in which mercurial-devel is the one which has discussions on development. There is a bugtracker on [Bugzilla](https://bz.mercurial-scm.org/) and [Phabricator](https://phab.mercurial-scm.org/) for code reviews. This is one of the most active opensource community that I've come accross. Everyday there are at least 10 to 15 patches sent by developers. I saw developers working even on their Sundays' leasure time.
+
+## About my Project
+I will be working on adding a functionality to store an unresolved merge-state. Merge conflicts are part of every version control system structure. There can be situations in which some changes are necessary for a piece of software to function properly but, an unexpected merge conflict may lag the development workflow. The user may want to store a partially resolved merge-state if they have to fix an urgent bug. In the current scenario, they are only allowed to either fully resolve conflicts or abort the operation that led to conflicts by discarding the partially resolved state with conflicts. This project is about adding functionality to store an unresolved merge-state to help the user on such occasions. This lets the user do the required tasks at the moment in the same repository and get back later to the same merge-state and resume resolving conflicts. This project also adds functionality to let someone else do the conflict resolution for the user if they want by committing the conflicts and sharing it with other users.
+
+You can read more about the project idea [here](https://www.mercurial-scm.org/wiki/SummerOfCode/Ideas2019#Add_functionality_to_store_an_unresolved_merge-state).
+
+## About my Mentors
+I have got three mentors for this project. My primary mentor is [Pulkit Goyal](https://bitbucket.org/PulkitG/). He is one of the active contributors of Mercurial. He is working as a software engineer at Yandex. He did his GSoC in Mercurial 2016 and have been mentoring students since then. Other two mentors are [Sangeet Kumar Mishra](https://bitbucket.org/sangeet259/) and [Sushil Khanchi](https://bitbucket.org/khanchi97/s). Both of them were GSoC students with Mercurial last year.
+
+## Community Bonding Period
+The first part of GSoC is the community bonding period and it's the most underrated period of GSoC. It provides enough time for the student to get familiar with the codebase and ask suggestions on their ideas from the community. I realized that my project is relatively tough and require hardwork and patience to complete. I had consistent interaction with the community and my mentor.
+
+I began working on a minimal implementation of the project and hope to deliver the proposed results in this timeline.
