@@ -1,0 +1,628 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+
+<meta charset="utf-8">
+
+
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>GSoC Week 5 - Week 6 - Navaneeth Suresh</title>
+
+
+
+
+
+
+
+<meta property="og:locale" content="en-US">
+<meta property="og:site_name" content="Navaneeth Suresh">
+<meta property="og:title" content="GSoC Week 5 - Week 6">
+
+
+  <link rel="canonical" href="https://themousepotato.github.io/posts/gsoc-week-5-week-6">
+  <meta property="og:url" content="https://themousepotato.github.io/posts/gsoc-week-5-week-6">
+
+
+
+  <meta property="og:description" content="I was working on adding interactive mode to hg unshelve. Until now, we cannot unshelve selected changes only from the stored shelve. We already have an interactive mode in hg shelve. I sent a patch[1] to add interactive mode to unshelve">
+
+
+
+
+
+  
+
+  
+
+
+
+
+
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2019-07-08T00:00:00-07:00">
+
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "Navaneeth Suresh",
+      "url" : "https://themousepotato.github.io",
+      "sameAs" : null
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+
+<link href="https://themousepotato.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="Navaneeth Suresh Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://themousepotato.github.io/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+    
+
+<!-- start custom head snippets -->
+
+<link rel="apple-touch-icon" sizes="57x57" href="https://themousepotato.github.io/images/apple-touch-icon-57x57.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="60x60" href="https://themousepotato.github.io/images/apple-touch-icon-60x60.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="72x72" href="https://themousepotato.github.io/images/apple-touch-icon-72x72.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="76x76" href="https://themousepotato.github.io/images/apple-touch-icon-76x76.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="114x114" href="https://themousepotato.github.io/images/apple-touch-icon-114x114.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="120x120" href="https://themousepotato.github.io/images/apple-touch-icon-120x120.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="144x144" href="https://themousepotato.github.io/images/apple-touch-icon-144x144.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="152x152" href="https://themousepotato.github.io/images/apple-touch-icon-152x152.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="180x180" href="https://themousepotato.github.io/images/apple-touch-icon-180x180.png?v=M44lzPylqQ">
+<link rel="icon" type="image/png" href="https://themousepotato.github.io/images/favicon-32x32.png?v=M44lzPylqQ" sizes="32x32">
+<link rel="icon" type="image/png" href="https://themousepotato.github.io/images/android-chrome-192x192.png?v=M44lzPylqQ" sizes="192x192">
+<link rel="icon" type="image/png" href="https://themousepotato.github.io/images/favicon-96x96.png?v=M44lzPylqQ" sizes="96x96">
+<link rel="icon" type="image/png" href="https://themousepotato.github.io/images/favicon-16x16.png?v=M44lzPylqQ" sizes="16x16">
+<link rel="manifest" href="https://themousepotato.github.io/images/manifest.json?v=M44lzPylqQ">
+<link rel="mask-icon" href="https://themousepotato.github.io/images/safari-pinned-tab.svg?v=M44lzPylqQ" color="#000000">
+<link rel="shortcut icon" href="/images/favicon.ico?v=M44lzPylqQ">
+<meta name="msapplication-TileColor" content="#000000">
+<meta name="msapplication-TileImage" content="https://themousepotato.github.io/images/mstile-144x144.png?v=M44lzPylqQ">
+<meta name="msapplication-config" content="https://themousepotato.github.io/images/browserconfig.xml?v=M44lzPylqQ">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="https://themousepotato.github.io/assets/css/academicons.css"/>
+
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <button><div class="navicon"></div></button>
+        <ul class="visible-links">
+          <li class="masthead__menu-item masthead__menu-item--lg"><a href="https://themousepotato.github.io/">Navaneeth Suresh</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="https://themousepotato.github.io/year-archive/">Blog Posts</a></li>
+          
+        </ul>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <div class="sidebar sticky">
+  
+
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  <div class="author__avatar">
+    
+    	<img src="https://themousepotato.github.io/images/me.jpg" class="author__avatar" alt="Navaneeth Suresh">
+    
+  </div>
+
+  <div class="author__content">
+    <h3 class="author__name">Navaneeth Suresh</h3>
+    <p class="author__bio">Fourth year undergraduate student at Indian Institute of Technology Kharagpur</p>
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> Kharagpur, India</li>
+      
+      
+      
+      
+        <li><a href="mailto:navaneeths1998@gmail.com"><i class="fas fa-fw fa-envelope" aria-hidden="true"></i> Email</a></li>
+      
+      
+       
+      
+        <li><a href="https://twitter.com/_themousepotato"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+      
+      
+      
+      
+        <li><a href="https://www.linkedin.com/in/navaneethsuresh"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+      
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/themousepotato"><i class="fab fa-fw fa-github" aria-hidden="true"></i> Github</a></li>
+      
+      
+      
+      
+      
+      
+      
+        <li><a href="https://steamcommunity.com/id/_nns"><i class="fab fa-fw fa-steam-square" aria-hidden="true"></i> Steam</a></li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="GSoC Week 5 - Week 6">
+    <meta itemprop="description" content="I was working on adding interactive mode to hg unshelve. Until now, we cannot unshelve selected changes only from the stored shelve. We already have an interactive mode in hg shelve. I sent a patch[1] to add interactive mode to unshelve">
+    <meta itemprop="datePublished" content="July 08, 2019">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">GSoC Week 5 - Week 6
+</h1>
+          
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  1 minute read
+	
+</p>
+          
+        
+        
+        
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2019-07-08T00:00:00-07:00">July 08, 2019</time></p>
+        
+        
+             
+        
+    
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        <p>I was working on adding interactive mode to <code class="language-plaintext highlighter-rouge">hg unshelve</code>. Until now, we cannot unshelve selected changes only from the stored shelve. We already have an interactive mode in <code class="language-plaintext highlighter-rouge">hg shelve</code>. I sent a patch<a href="https://phab.mercurial-scm.org/D6596">[1]</a> to add interactive mode to <code class="language-plaintext highlighter-rouge">unshelve</code></p>
+
+<p>I started with adding selected files only as a baby step. I borrowed a function from <code class="language-plaintext highlighter-rouge">uncommit</code> extension called <code class="language-plaintext highlighter-rouge">_commitfiltered()</code>. What it does was it created a new changeset excluding the given files. I modified it to include the given files to make it work for <code class="language-plaintext highlighter-rouge">unshelve</code>. This function had the following syntax by default:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">def</span> <span class="nf">_commitfiltered</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">match</span><span class="p">,</span> <span class="n">keepcommit</span><span class="p">):</span>
+    <span class="s">"""Recommit ctx with changed files not in match. Return the new
+    node identifier, or None if nothing changed.
+    """</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">.</span><span class="n">p1</span><span class="p">()</span>
+    <span class="c1"># ctx
+</span>    <span class="n">initialfiles</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="n">files</span><span class="p">())</span>
+    <span class="n">exclude</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">initialfiles</span> <span class="k">if</span> <span class="n">match</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+
+    <span class="c1"># No files matched commit, so nothing excluded
+</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">exclude</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="c1"># return the p1 so that we don't create an obsmarker later
+</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">keepcommit</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ctx</span><span class="p">.</span><span class="n">p1</span><span class="p">().</span><span class="n">node</span><span class="p">()</span>
+
+    <span class="n">files</span> <span class="o">=</span> <span class="p">(</span><span class="n">initialfiles</span> <span class="o">-</span> <span class="n">exclude</span><span class="p">)</span>
+    <span class="c1"># Filter copies
+</span>    <span class="n">copied</span> <span class="o">=</span> <span class="n">copiesmod</span><span class="p">.</span><span class="n">pathcopies</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+    <span class="n">copied</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">dst</span><span class="p">,</span> <span class="n">src</span><span class="p">)</span> <span class="k">for</span> <span class="n">dst</span><span class="p">,</span> <span class="n">src</span> <span class="ow">in</span> <span class="n">copied</span><span class="p">.</span><span class="n">iteritems</span><span class="p">()</span>
+                  <span class="k">if</span> <span class="n">dst</span> <span class="ow">in</span> <span class="n">files</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">filectxfn</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">memctx</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">contentctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">contentctx</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="n">fctx</span> <span class="o">=</span> <span class="n">contentctx</span><span class="p">[</span><span class="n">path</span><span class="p">]</span>
+        <span class="n">mctx</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">memfilectx</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">memctx</span><span class="p">,</span> <span class="n">fctx</span><span class="p">.</span><span class="n">path</span><span class="p">(),</span> <span class="n">fctx</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span>
+                                  <span class="n">fctx</span><span class="p">.</span><span class="n">islink</span><span class="p">(),</span>
+                                  <span class="n">fctx</span><span class="p">.</span><span class="n">isexec</span><span class="p">(),</span>
+                                  <span class="n">copysource</span><span class="o">=</span><span class="n">copied</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">mctx</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">repo</span><span class="p">.</span><span class="n">ui</span><span class="p">.</span><span class="n">status</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">"note: keeping empty commit</span><span class="se">\n</span><span class="s">"</span><span class="p">))</span>
+
+    <span class="n">new</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">memctx</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span>
+                         <span class="n">parents</span><span class="o">=</span><span class="p">[</span><span class="n">base</span><span class="p">.</span><span class="n">node</span><span class="p">(),</span> <span class="n">node</span><span class="p">.</span><span class="n">nullid</span><span class="p">],</span>
+                         <span class="n">text</span><span class="o">=</span><span class="n">ctx</span><span class="p">.</span><span class="n">description</span><span class="p">(),</span>
+                         <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span>
+                         <span class="n">filectxfn</span><span class="o">=</span><span class="n">filectxfn</span><span class="p">,</span>
+                         <span class="n">user</span><span class="o">=</span><span class="n">ctx</span><span class="p">.</span><span class="n">user</span><span class="p">(),</span>
+                         <span class="n">date</span><span class="o">=</span><span class="n">ctx</span><span class="p">.</span><span class="n">date</span><span class="p">(),</span>
+                         <span class="n">extra</span><span class="o">=</span><span class="n">ctx</span><span class="p">.</span><span class="n">extra</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">repo</span><span class="p">.</span><span class="n">commitctx</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>Then, I started working directly by looking at the interactive mode on <code class="language-plaintext highlighter-rouge">shelve</code>. I had to pass an interactive commit function which does <code class="language-plaintext highlighter-rouge">cmdutil.dorecord()</code>. I had to make it work for all corner cases possible. One of the important cases which I missed initially was unshelve on interactive mode with conflicts. Later, I made this work for all cases.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="https://themousepotato.github.io/tags/#gsoc" class="page__taxonomy-item" rel="tag">gsoc</a><span class="sep">, </span>
+    
+      
+      
+      <a href="https://themousepotato.github.io/tags/#software" class="page__taxonomy-item" rel="tag">software</a>
+    
+    </span>
+  </p>
+
+
+
+
+      </footer>
+
+      
+
+<section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=https://themousepotato.github.io/posts/gsoc-week-5-week-6" class="btn btn--twitter" title="Share on Twitter"><i class="fab fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https://themousepotato.github.io/posts/gsoc-week-5-week-6" class="btn btn--facebook" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://themousepotato.github.io/posts/gsoc-week-5-week-6" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+      
+
+
+  <nav class="pagination">
+    
+      <a href="https://themousepotato.github.io/posts/gsoc-week-3-week-4" class="pagination--pager" title="GSoC Week 3 - Week 4
+">Previous</a>
+    
+    
+      <a href="https://themousepotato.github.io/posts/gsoc-final" class="pagination--pager" title="GSoC final blog posts
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      
+        <h4 class="page__related-title">You May Also Enjoy</h4>
+      
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://themousepotato.github.io/posts/gsoc-final" rel="permalink">GSoC final blog posts
+</a>
+      
+    </h2>
+    
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  less than 1 minute read
+	
+</p>
+    
+
+        
+         <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2019-08-25T00:00:00-07:00">August 25, 2019</time></p>
+        
+
+    <!--
+    <p class="archive__item-excerpt" itemprop="description"><p>I was also writing on the PSF site about my progress in GSoC. So, I decided to migrate to that fully since it keeps an overview of the work that I’ve done. If you’re interested in reading about that, refer my <a href="https://blogs.python-gsoc.org/en/navaneethsureshs-blog/">blog</a> on the PSF site.</p>
+</p>
+    -->
+    
+    
+
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://themousepotato.github.io/posts/gsoc-week-3-week-4" rel="permalink">GSoC Week 3 - Week 4
+</a>
+      
+    </h2>
+    
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  1 minute read
+	
+</p>
+    
+
+        
+         <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2019-06-24T00:00:00-07:00">June 24, 2019</time></p>
+        
+
+    <!--
+    <p class="archive__item-excerpt" itemprop="description"><p>First two weeks of the coding period went well and I had sent a patch on the first prototype of the functionality that I have coded up. I had only used the usual mergestate format for that. Starting from week 3, I worked on storing mergestate records in the changeset extras so that it can be exchanged to other repositories. I updated the patch that I had sent here<a href="https://phab.mercurial-scm.org/D6479">[1]</a>. Also, the patch<a href="https://phab.mercurial-scm.org/D6448">[2]</a> which added documentation on <code class="language-plaintext highlighter-rouge">internals.mergestate</code> got merged too.</p>
+
+</p>
+    -->
+    
+    
+
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://themousepotato.github.io/posts/gsoc-week-1-week-2" rel="permalink">GSoC Week 1 - Week 2
+</a>
+      
+    </h2>
+    
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  4 minute read
+	
+</p>
+    
+
+        
+         <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2019-06-07T00:00:00-07:00">June 07, 2019</time></p>
+        
+
+    <!--
+    <p class="archive__item-excerpt" itemprop="description"><p>I had to work on implementing functionality to store unresolved merge-states. After interacting with the community, most of the people voted for an approach that I hadn’t thought much of. It was to add an <code class="language-plaintext highlighter-rouge">--unresolved</code> flag to <code class="language-plaintext highlighter-rouge">hg shelve</code> and <code class="language-plaintext highlighter-rouge">hg unshelve</code> commands. @marmoute advised me to study the current storage format of mergestate in depth and send a patch to the core to add an <code class="language-plaintext highlighter-rouge">internals.mergestate</code> help entry. I sent a patch<a href="https://phab.mercurial-scm.org/D6448">[1]</a> for that in the very first day itself.</p>
+
+</p>
+    -->
+    
+    
+
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://themousepotato.github.io/posts/gsoc-coding-period-begins" rel="permalink">GSoC - Coding Period begins
+</a>
+      
+    </h2>
+    
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  3 minute read
+	
+</p>
+    
+
+        
+         <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2019-05-27T00:00:00-07:00">May 27, 2019</time></p>
+        
+
+    <!--
+    <p class="archive__item-excerpt" itemprop="description"><p>The community bonding period had ended on May 26th. I utilized this period to discuss my project even more deeper with the community with my proposed implementations. Unfortunately, my proposed method in my official gsoc proposal had a different approach in the UI level. However, the basic things remain the same. People who are familiar with internals came with suggestions and the methods got changed based on their suggestions. I had a video conference with my mentors and they helped me to have a good kickstart with the project. I spent most of the time reading the codebase and splitting the plan of implementation even deeper.</p>
+
+</p>
+    -->
+    
+    
+
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+
+        
+
+<div class="page__footer-follow">
+
+<div class="page__footer-copyright">&copy; 2021 Navaneeth Suresh. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/academicpages/academicpages.github.io">AcademicPages</a>, a fork of <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+</div>
+
+      </footer>
+    </div>
+
+    <script src="https://themousepotato.github.io/assets/js/main.min.js"></script>
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+  </body>
+</html>
+

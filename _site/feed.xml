@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.7">Jekyll</generator><link href="https://themousepotato.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://themousepotato.github.io/" rel="alternate" type="text/html" /><updated>2021-01-07T00:35:34-08:00</updated><id>https://themousepotato.github.io/feed.xml</id><title type="html">Navaneeth Suresh</title><subtitle></subtitle><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><entry><title type="html">GSoC final blog posts</title><link href="https://themousepotato.github.io/posts/gsoc-final" rel="alternate" type="text/html" title="GSoC final blog posts" /><published>2019-08-25T00:00:00-07:00</published><updated>2019-08-25T00:00:00-07:00</updated><id>https://themousepotato.github.io/posts/gsoc-final</id><content type="html" xml:base="https://themousepotato.github.io/posts/gsoc-final">&lt;p&gt;I was also writing on the PSF site about my progress in GSoC. So, I decided to migrate to that fully since it keeps an overview of the work that I’ve done. If you’re interested in reading about that, refer my &lt;a href=&quot;https://blogs.python-gsoc.org/en/navaneethsureshs-blog/&quot;&gt;blog&lt;/a&gt; on the PSF site.&lt;/p&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="gsoc" /><category term="software" /><summary type="html">I was also writing on the PSF site about my progress in GSoC. So, I decided to migrate to that fully since it keeps an overview of the work that I’ve done. If you’re interested in reading about that, refer my blog on the PSF site.</summary></entry><entry><title type="html">GSoC Week 5 - Week 6</title><link href="https://themousepotato.github.io/posts/gsoc-week-5-week-6" rel="alternate" type="text/html" title="GSoC Week 5 - Week 6" /><published>2019-07-08T00:00:00-07:00</published><updated>2019-07-08T00:00:00-07:00</updated><id>https://themousepotato.github.io/posts/gsoc-week-5-week-6</id><content type="html" xml:base="https://themousepotato.github.io/posts/gsoc-week-5-week-6">&lt;p&gt;I was working on adding interactive mode to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hg unshelve&lt;/code&gt;. Until now, we cannot unshelve selected changes only from the stored shelve. We already have an interactive mode in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hg shelve&lt;/code&gt;. I sent a patch&lt;a href=&quot;https://phab.mercurial-scm.org/D6596&quot;&gt;[1]&lt;/a&gt; to add interactive mode to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unshelve&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;I started with adding selected files only as a baby step. I borrowed a function from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;uncommit&lt;/code&gt; extension called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_commitfiltered()&lt;/code&gt;. What it does was it created a new changeset excluding the given files. I modified it to include the given files to make it work for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unshelve&lt;/code&gt;. This function had the following syntax by default:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;_commitfiltered&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;keepcommit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;Recommit ctx with changed files not in match. Return the new
+    node identifier, or None if nothing changed.
+    &quot;&quot;&quot;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ctx
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;initialfiles&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;exclude&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;initialfiles&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# No files matched commit, so nothing excluded
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exclude&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# return the p1 so that we don't create an obsmarker later
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;keepcommit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;files&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;initialfiles&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exclude&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Filter copies
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;copied&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;copiesmod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pathcopies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;copied&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dst&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dst&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;src&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;copied&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iteritems&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+                  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dst&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;filectxfn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;memctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contentctx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;redirect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contentctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;fctx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contentctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;mctx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;memfilectx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;memctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+                                  &lt;span class=&quot;n&quot;&gt;fctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;islink&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+                                  &lt;span class=&quot;n&quot;&gt;fctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isexec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+                                  &lt;span class=&quot;n&quot;&gt;copysource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;copied&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mctx&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;note: keeping empty commit&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;memctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                         &lt;span class=&quot;n&quot;&gt;parents&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nullid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+                         &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+                         &lt;span class=&quot;n&quot;&gt;files&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                         &lt;span class=&quot;n&quot;&gt;filectxfn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filectxfn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                         &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+                         &lt;span class=&quot;n&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+                         &lt;span class=&quot;n&quot;&gt;extra&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;extra&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;commitctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then, I started working directly by looking at the interactive mode on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shelve&lt;/code&gt;. I had to pass an interactive commit function which does &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cmdutil.dorecord()&lt;/code&gt;. I had to make it work for all corner cases possible. One of the important cases which I missed initially was unshelve on interactive mode with conflicts. Later, I made this work for all cases.&lt;/p&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="gsoc" /><category term="software" /><summary type="html">I was working on adding interactive mode to hg unshelve. Until now, we cannot unshelve selected changes only from the stored shelve. We already have an interactive mode in hg shelve. I sent a patch[1] to add interactive mode to unshelve</summary></entry><entry><title type="html">GSoC Week 3 - Week 4</title><link href="https://themousepotato.github.io/posts/gsoc-week-3-week-4" rel="alternate" type="text/html" title="GSoC Week 3 - Week 4" /><published>2019-06-24T00:00:00-07:00</published><updated>2019-06-24T00:00:00-07:00</updated><id>https://themousepotato.github.io/posts/gsoc-week-3-week-4</id><content type="html" xml:base="https://themousepotato.github.io/posts/gsoc-week-3-week-4">&lt;p&gt;First two weeks of the coding period went well and I had sent a patch on the first prototype of the functionality that I have coded up. I had only used the usual mergestate format for that. Starting from week 3, I worked on storing mergestate records in the changeset extras so that it can be exchanged to other repositories. I updated the patch that I had sent here&lt;a href=&quot;https://phab.mercurial-scm.org/D6479&quot;&gt;[1]&lt;/a&gt;. Also, the patch&lt;a href=&quot;https://phab.mercurial-scm.org/D6448&quot;&gt;[2]&lt;/a&gt; which added documentation on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;internals.mergestate&lt;/code&gt; got merged too.&lt;/p&gt;
+
+&lt;p&gt;The mergestate record information is stored as a list of tuples and I had to store it in the extra mapping &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mergerecords&lt;/code&gt;. I had to write an encoder and decorder for this as the information from the extra mapping can only be parsed as a string. I have used the following code for the encoder and decoder.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;_encodemergerecords&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;records&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;Encode mergestate records to store in changeset extras.
+    Takes list of tuples as input and returns str.
+    &quot;&quot;&quot;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;items&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;'%s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\033&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;%s'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rtype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rtype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;record&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sorted&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;records&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;_decodemergerecords&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;Decode mergestate record from changeset extras to return
+    a list of tuples.
+    &quot;&quot;&quot;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;records&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;rtype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;record&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\033&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;records&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rtype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;records&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The read/write operations that can be performed on mergestate information were already implemented on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;merge.py&lt;/code&gt;. So, I used that right away. You can find the complete code for the functionality with documentation here&lt;a href=&quot;https://phab.mercurial-scm.org/D6479&quot;&gt;[3]&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The next week, I got some interesting ideas from my mentor outside the project sample space. I worked on moving shelve extension to core and sent a patch&lt;a href=&quot;https://phab.mercurial-scm.org/D6553&quot;&gt;[4]&lt;/a&gt; for that. I am looking forward to work on extending the functionality to store/restore mergestate to multi-step commands like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rebase&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;histedit&lt;/code&gt;, exchanging shelves and moving show extension to core.&lt;/p&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="gsoc" /><category term="software" /><summary type="html">First two weeks of the coding period went well and I had sent a patch on the first prototype of the functionality that I have coded up. I had only used the usual mergestate format for that. Starting from week 3, I worked on storing mergestate records in the changeset extras so that it can be exchanged to other repositories. I updated the patch that I had sent here[1]. Also, the patch[2] which added documentation on internals.mergestate got merged too.</summary></entry><entry><title type="html">GSoC Week 1 - Week 2</title><link href="https://themousepotato.github.io/posts/gsoc-week-1-week-2" rel="alternate" type="text/html" title="GSoC Week 1 - Week 2" /><published>2019-06-07T00:00:00-07:00</published><updated>2019-06-07T00:00:00-07:00</updated><id>https://themousepotato.github.io/posts/gsoc-week-1-week-2</id><content type="html" xml:base="https://themousepotato.github.io/posts/gsoc-week-1-week-2">&lt;p&gt;I had to work on implementing functionality to store unresolved merge-states. After interacting with the community, most of the people voted for an approach that I hadn’t thought much of. It was to add an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--unresolved&lt;/code&gt; flag to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hg shelve&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hg unshelve&lt;/code&gt; commands. @marmoute advised me to study the current storage format of mergestate in depth and send a patch to the core to add an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;internals.mergestate&lt;/code&gt; help entry. I sent a patch&lt;a href=&quot;https://phab.mercurial-scm.org/D6448&quot;&gt;[1]&lt;/a&gt; for that in the very first day itself.&lt;/p&gt;
+
+&lt;p&gt;Before sending patches directly to the core, it was necessary to experiment with the ideas that I had and test them. My mentor @pulkit adviced me to bootstrap my implementation as an extension and push changes to my clone&lt;a href=&quot;https://bitbucket.org/navaneethsuresh/hg/src/default/&quot;&gt;[2]&lt;/a&gt; of hg on bitbucket. I pushed two commits. One&lt;a href=&quot;https://bitbucket.org/navaneethsuresh/hg/commits/5a4358258d60ab26bf9863b99ca6bf4c33dd8c31&quot;&gt;[3]&lt;/a&gt; of them added an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--unresolved&lt;/code&gt; flag to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hg commit&lt;/code&gt; which made to commit unresolved merge and the other&lt;a href=&quot;https://bitbucket.org/navaneethsuresh/hg/commits/650d3ac7328a4f88ef005aacce8ef2d261fa820f&quot;&gt;[4]&lt;/a&gt; added a new command &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hg commit-unresolved&lt;/code&gt; to make the user get back to the old unresolved merge-state. I received good reviews from my mentor for both of them. Writing a new extension to mercurial and integrate it over there was much easier than I thought. The wiki had a nice page&lt;a href=&quot;https://www.mercurial-scm.org/wiki/WritingExtensions&quot;&gt;[5]&lt;/a&gt; for that. I followed those instructions to set up new extensions without making the main codebase buggy. We can also bootstrap a flag as an extension.&lt;/p&gt;
+
+&lt;p&gt;The next week, I worked on adding the flag &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--unresolved&lt;/code&gt; to both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hg shelve&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hg unshelve&lt;/code&gt; commands. This changed their behaviour to handle unresolved merge-states with a simple hack. I used the already stored mergestate information. I have sent two patches to the core after implementing one&lt;a href=&quot;https://phab.mercurial-scm.org/D6478&quot;&gt;[6]&lt;/a&gt; for shelve and another&lt;a href=&quot;https://phab.mercurial-scm.org/D6479&quot;&gt;[7]&lt;/a&gt; for unshelve.&lt;/p&gt;
+
+&lt;h2 id=&quot;changing-the-behavior-of-shelve&quot;&gt;Changing the behavior of shelve&lt;/h2&gt;
+&lt;p&gt;Shelving was aborted when a merge is in progress. I had to stop this abort and allow it to continue when called with an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--unresolved&lt;/code&gt; flag. Then, after locking the repo, an extra mapping &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{'unresolved-merge': True}&lt;/code&gt; is added to the shelve changeset. Finally, the usual merge-state information is moved to a new place &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.hg/merge-unresolved&lt;/code&gt;. The following code made that work.&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unresolved&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;extra&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'unresolved-merge'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vfs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'merge-unresolved'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;util&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;makedir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vfs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'merge-unresolved'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;util&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vfs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'merge'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vfs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'merge-unresolved/%s/'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;changing-the-behaviour-of-unshelve&quot;&gt;Changing the behaviour of unshelve&lt;/h2&gt;
+&lt;p&gt;Unshelve should update the working directory to the old unresolved merge-state. But, one problem with this is what the UI should be when the user has commits on the top of the shelved unresolved merge-state. The user has to be in one of the merge parents of the stored shelve in order to restore the unresolved merge-state. Also, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hg unshelve --unresolved&lt;/code&gt; will abort on a dirty working directory. The following steps are taken by unshelve to get back to the stored unresolved merge-state.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;If the user has committed new changesets after shelving the changes, they must update the working directory to one of the merge parents.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Internally, merge &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;p1&lt;/code&gt; with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;p2&lt;/code&gt; with the merge tool &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;:fail&lt;/code&gt;. This will not update the contents of the files with conflicting changes. Instead, it will mark them as unresolved.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;This internal merge will also mark the files which are already resolved by the user in the unresolved shelve changeset as unresolved. But, we will move the contents of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$HGRCPATH/merge-unresolved/&amp;lt;basename&amp;gt;/&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$HGRCPATH/merge/&lt;/code&gt; so that we can restore the partially resolved states.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We now have a state in which files marked as resolved might have conflicts. But, we will apply the changes in shelve on the top of this so that we can get our old unresolved merge again by the usual &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unshelve&lt;/code&gt; mechanism. The usual rebase step is avoided on unresolved shelve changesets.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I wrote a new function &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shelve.restoreunresolvedshelve()&lt;/code&gt; to get this work as:&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;restoreunresolvedshelve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;basename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shelvectx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shelvectx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;overrides&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'ui'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'forcemerge'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;':fail'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Rather than attempting to merge files that were modified on
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;# both branches, `:fail` marks them as unresolved.
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;# This will also mark resolved files in unresolved shelvectx as
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;# unresolved. We'll restore their status and content later.
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;configoverride&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;overrides&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'unshelve'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;# dirstate can be either p1 or p2.
+&lt;/span&gt;        &lt;span class=&quot;n&quot;&gt;targetctx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;targetctx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;merge&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;targetctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;branchmerge&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mergeforce&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                     &lt;span class=&quot;n&quot;&gt;force&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vfs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'merge-unresolved'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;util&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;makedir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vfs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'merge-unresolved'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;shutil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rmtree&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vfs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'merge'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Replace `merge/` with `merge-unresolved/&amp;lt;basename&amp;gt;/` to
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;# restore the status of resolved files in shelvectx.
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;util&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vfs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'merge-unresolved/%s/'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;basename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vfs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'merge'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now that I have a fully functioning UI with the proposed method. However, the end-goal of the project is to transmit these stored unresolved merge-states across repositories. For that, I would have to store data in changeset level. Now, I shall wait for reviews from the community on the current approach and will start working on storing data in a changeset level from next week.&lt;/p&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="gsoc" /><category term="software" /><summary type="html">I had to work on implementing functionality to store unresolved merge-states. After interacting with the community, most of the people voted for an approach that I hadn’t thought much of. It was to add an --unresolved flag to hg shelve and hg unshelve commands. @marmoute advised me to study the current storage format of mergestate in depth and send a patch to the core to add an internals.mergestate help entry. I sent a patch[1] for that in the very first day itself.</summary></entry><entry><title type="html">GSoC - Coding Period begins</title><link href="https://themousepotato.github.io/posts/gsoc-coding-period-begins" rel="alternate" type="text/html" title="GSoC - Coding Period begins" /><published>2019-05-27T00:00:00-07:00</published><updated>2019-05-27T00:00:00-07:00</updated><id>https://themousepotato.github.io/posts/coding-period-begins</id><content type="html" xml:base="https://themousepotato.github.io/posts/gsoc-coding-period-begins">&lt;p&gt;The community bonding period had ended on May 26th. I utilized this period to discuss my project even more deeper with the community with my proposed implementations. Unfortunately, my proposed method in my official gsoc proposal had a different approach in the UI level. However, the basic things remain the same. People who are familiar with internals came with suggestions and the methods got changed based on their suggestions. I had a video conference with my mentors and they helped me to have a good kickstart with the project. I spent most of the time reading the codebase and splitting the plan of implementation even deeper.&lt;/p&gt;
+
+&lt;h2 id=&quot;about-mercurial&quot;&gt;About Mercurial&lt;/h2&gt;
+&lt;p&gt;&lt;span style=&quot;float:left;margin-right:10px;margin-bottom:10px;width:40%;height:40%;&quot;&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mercurial-logo.png&quot; alt=&quot;Mercurial&quot; /&gt;
+&lt;/span&gt;
+Mercurial ​ is a free, distributed source control management tool. It efficiently handles projects of any size and offers an easy and intuitive interface. Most part of the codebase is written on python. Other than python, it has parts which are written in C and Rust considering performance. It’s famous for its feature of scalability. The primary communication channel is #mercurial on IRC. There are mailing lists in which mercurial-devel is the one which has discussions on development. There is a bugtracker on &lt;a href=&quot;https://bz.mercurial-scm.org/&quot;&gt;Bugzilla&lt;/a&gt; and &lt;a href=&quot;https://phab.mercurial-scm.org/&quot;&gt;Phabricator&lt;/a&gt; for code reviews. This is one of the most active opensource community that I’ve come accross. Everyday there are at least 10 to 15 patches sent by developers. I saw developers working even on their Sundays’ leasure time.&lt;/p&gt;
+
+&lt;h2 id=&quot;about-my-project&quot;&gt;About my Project&lt;/h2&gt;
+&lt;p&gt;I will be working on adding a functionality to store an unresolved merge-state. Merge conflicts are part of every version control system structure. There can be situations in which some changes are necessary for a piece of software to function properly but, an unexpected merge conflict may lag the development workflow. The user may want to store a partially resolved merge-state if they have to fix an urgent bug. In the current scenario, they are only allowed to either fully resolve conflicts or abort the operation that led to conflicts by discarding the partially resolved state with conflicts. This project is about adding functionality to store an unresolved merge-state to help the user on such occasions. This lets the user do the required tasks at the moment in the same repository and get back later to the same merge-state and resume resolving conflicts. This project also adds functionality to let someone else do the conflict resolution for the user if they want by committing the conflicts and sharing it with other users.&lt;/p&gt;
+
+&lt;p&gt;You can read more about the project idea &lt;a href=&quot;https://www.mercurial-scm.org/wiki/SummerOfCode/Ideas2019#Add_functionality_to_store_an_unresolved_merge-state&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;about-my-mentors&quot;&gt;About my Mentors&lt;/h2&gt;
+&lt;p&gt;I have got three mentors for this project. My primary mentor is &lt;a href=&quot;https://bitbucket.org/PulkitG/&quot;&gt;Pulkit Goyal&lt;/a&gt;. He is one of the active contributors of Mercurial. He is working as a software engineer at Yandex. He did his GSoC in Mercurial 2016 and have been mentoring students since then. Other two mentors are &lt;a href=&quot;https://bitbucket.org/sangeet259/&quot;&gt;Sangeet Kumar Mishra&lt;/a&gt; and &lt;a href=&quot;https://bitbucket.org/khanchi97/s&quot;&gt;Sushil Khanchi&lt;/a&gt;. Both of them were GSoC students with Mercurial last year.&lt;/p&gt;
+
+&lt;h2 id=&quot;community-bonding-period&quot;&gt;Community Bonding Period&lt;/h2&gt;
+&lt;p&gt;The first part of GSoC is the community bonding period and it’s the most underrated period of GSoC. It provides enough time for the student to get familiar with the codebase and ask suggestions on their ideas from the community. I realized that my project is relatively tough and require hardwork and patience to complete. I had consistent interaction with the community and my mentor.&lt;/p&gt;
+
+&lt;p&gt;I began working on a minimal implementation of the project and hope to deliver the proposed results in this timeline.&lt;/p&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="gsoc" /><category term="software" /><summary type="html">The community bonding period had ended on May 26th. I utilized this period to discuss my project even more deeper with the community with my proposed implementations. Unfortunately, my proposed method in my official gsoc proposal had a different approach in the UI level. However, the basic things remain the same. People who are familiar with internals came with suggestions and the methods got changed based on their suggestions. I had a video conference with my mentors and they helped me to have a good kickstart with the project. I spent most of the time reading the codebase and splitting the plan of implementation even deeper.</summary></entry><entry><title type="html">Getting selected for GSoC ‘19</title><link href="https://themousepotato.github.io/posts/gsoc-getting-selected" rel="alternate" type="text/html" title="Getting selected for GSoC '19" /><published>2019-05-06T00:00:00-07:00</published><updated>2019-05-06T00:00:00-07:00</updated><id>https://themousepotato.github.io/posts/getting-selected-for-gsoc-19</id><content type="html" xml:base="https://themousepotato.github.io/posts/gsoc-getting-selected">&lt;p&gt;I was really passionate about programming since my school days. I knew about Google Summer of Code before coming to my college and wanted to apply for the program since then. But, unfortunately, due to the academic load of the first year, I failed to find time for GSoC. However, I found time to do some hobbyist programming with my peers of &lt;a href=&quot;https://metakgp.github.io/&quot;&gt;MetaKGP&lt;/a&gt; and &lt;a href=&quot;https://kossiitkgp.org/&quot;&gt;Kharagpur Open Source Society&lt;/a&gt; by making fun projects at college. After the regrets of the first year, there comes the second. I had a knack of python since school and wanted to work on a codebase which evolves around python. So, I searched for suborgs under Python Software Foundation and found Mercurial exciting to work with.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/gsoc-banner.png&quot; alt=&quot;GSoC&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I was quite familiar with version control systems and Mercurial being a version control system written in python was a way to go. I started experimenting with Mercurial from the month of October and felt that intriguing. I joined their communication channel, #mercurial on IRC. This was my first time with IRC. I had written a blog post about IRC after spending enough time with that. I was in search of a good start to explore Mercurial in deep. At that time, one of the active contributors &lt;a href=&quot;https://bitbucket.org/PulkitG/&quot;&gt;Pulkit&lt;/a&gt; recommended me to read &lt;a href=&quot;http://hgbook.red-bean.com/&quot;&gt;Mercurial: The Definitive Guide&lt;/a&gt; by Bryan O’Sullivan. Surprisingly, he became my mentor for GSoC. This book even contained a chapter called, “Behind the scenes” which was interesting. My learning curve was very steep since then. I finished reading this and after having done enough experiments with hg and getting my mid-semester exams over, I started to focus on contributing to the project. I read the contribution guidelines and setup development environment. Searched bugs and picked one which adds a new feature to one of the core commands. I made my first PR in the last week of December. The development workflow was completely new to me. I usually used to work with git and GitHub for managing my opensource projects. Mercurial had a separate bugtracker, &lt;a href=&quot;https://bz.mercurial-scm.org/&quot;&gt;Bugzilla&lt;/a&gt; and a patch review platform, &lt;a href=&quot;https://phab.mercurial-scm.org/&quot;&gt;Phabricator&lt;/a&gt;. It took me almost a month to learn this workflow. Even fixing the first bug was easier than this effort. After around 3 hrs, I got my first review on the patch. It was &lt;a href=&quot;https://bitbucket.org/yuja/&quot;&gt;Yuya&lt;/a&gt;. His comment was so precise and motivated me to work on that further. It took almost one week to get merged. The community is very much interested in improving their codebase and they really care to make it less prone to bugs. Mercurial is used by companies like Facebook, Mozilla, et al. to track their code because of its scalability nature compared to git and other VCSes. I managed to find time for contributions and had sent PRs by a gap of 2-3 days which were on core issues itself.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mercurial-banner.png&quot; alt=&quot;Mercurial&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;When the projects were announced, I chose the one which can make a great impact on Mercurial. I chose the one on adding functionality to store an unresolved merge-state. The project description is given &lt;a href=&quot;https://www.mercurial-scm.org/wiki/SummerOfCode/Ideas2019#Add_functionality_to_store_an_unresolved_merge-state&quot;&gt;here&lt;/a&gt;. I felt this one as really challenging and exciting to work on. I came to know about another VCS called &lt;a href=&quot;https://pijul.org/&quot;&gt;Pijul&lt;/a&gt;. It was pretty new and was based on patch theory. I started to read a research paper on category theory of patches, saw some videos on it and read Joe Neeman’s blog posts on them. The last one gave me more user-friendly insights into the concepts behind the theory. I discussed things I learnt with the community on #mercurial and #pijul. People started to discuss it and the whole night went on that. They were happy to clear my doubts. When I looked around, there was the Sun. Days passed. My learning curve was always steep. The days to proposal submission came closer. But, knowledge at the implementation level to write the proposal was missing with me. I reached out to my seniors and discussed with friends on the style of a good GSoC proposal. I saw some of their proposals and almost all of them had details at the implementation level. There was hardly one week left for the submission deadline and I hadn’t started writing my proposal. My class tests and lab exams also got started then. From the help of my friends, I managed to keep motivated and started writing my proposal after finding time in the hectic schedule. I sent my first draft very late and asked my mentor for suggestions. He was there with suggestions and told me to write how I thought of this project from what I’d understood so far. I wrote a 16 paged proposal from what I’d grasped so far. I was even making edits to the proposal in the last 5 minutes before the deadline.&lt;/p&gt;
+
+&lt;p&gt;Then comes the result day. Despite getting a good number of PRs merged and having a good interaction with the community, I was really tensed as my proposal was more hypothetical and was chilling by watching some episodes of Brooklyn Nine Nine. I had a bottle of beer with me at that time which I thought can cure my heartbreak or happiness as necessary. When it was 11:30 AM IST, one of my mentors, &lt;a href=&quot;https://bitbucket.org/sangeet259/&quot;&gt;Sangeet&lt;/a&gt; messaged me a simple “Congrats”. I can’t forget that feeling. I was really happy and excited for the summers. Thanks to my mentors and the hg community for having faith in me.&lt;/p&gt;
+
+&lt;p&gt;The period until May 27 is community bonding. I’ll write my second blog post when it ends.&lt;/p&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="gsoc" /><category term="software" /><summary type="html">I was really passionate about programming since my school days. I knew about Google Summer of Code before coming to my college and wanted to apply for the program since then. But, unfortunately, due to the academic load of the first year, I failed to find time for GSoC. However, I found time to do some hobbyist programming with my peers of MetaKGP and Kharagpur Open Source Society by making fun projects at college. After the regrets of the first year, there comes the second. I had a knack of python since school and wanted to work on a codebase which evolves around python. So, I searched for suborgs under Python Software Foundation and found Mercurial exciting to work with.</summary></entry><entry><title type="html">IRC - A blessing in disguise</title><link href="https://themousepotato.github.io/posts/irc-a-blessing-in-disguise" rel="alternate" type="text/html" title="IRC - A blessing in disguise" /><published>2019-04-26T00:00:00-07:00</published><updated>2019-04-26T00:00:00-07:00</updated><id>https://themousepotato.github.io/posts/irc-a-blessing-in-disguise</id><content type="html" xml:base="https://themousepotato.github.io/posts/irc-a-blessing-in-disguise">&lt;p&gt;In this post, I’ll explain the misconceptions I had with IRC(Internet Relay Chat) and how I resolved them. This is not going to be a Slack vs IRC post and I won’t be talking about good things about either of them. Instead, I’ll just say how I got my misconceptions resolved.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/irc.png&quot; alt=&quot;IRC&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I used to wonder why people use IRC for communication. I usually use Slack for communication and I love it. The downsides I felt on using IRC with Freenode were:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;You can only see messages when you are online.&lt;/li&gt;
+  &lt;li&gt;You’ll be kicked out of the channel because of inactivity(opening a tab in your browser but, you are never looking back).&lt;/li&gt;
+  &lt;li&gt;No support for threads.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;But, I realized that programmers are still all over IRC. It has helped to keep online communities around open-source programming active and productive for more than two decades. Let’s start talking about the downsides I felt. I’ll talk in detail about 1 later. 2 can be easily solved by setting up an IRC Client. I installed HexChat in my PC and it never kicked me out. But, I had to keep my laptop turned on for the whole day in order to see every message in the channel.&lt;/p&gt;
+
+&lt;p&gt;I heard about setting an IRC bouncer to resolve 1. &lt;a href=&quot;https://opensource.com/article/17/4/never-leave-irc-again&quot;&gt;This&lt;/a&gt; article explains how to install and use ZNC bouncer for IRC. This is community-recommended and you are good to go with your IRC Client. But, I had to buy a server for that. There are IRC Clients with bouncer support also. But, both of them costs money. A free alternative to resolve 1 is using a Matrix Client with Freenode support. I use riot.im with my Freenode nick. I’m not going to talk about that in detail. But, don’t be sad. I have two links[&lt;a href=&quot;https://github.com/matrix-org/matrix-appservice-irc/wiki/End-user-FAQ&quot;&gt;1&lt;/a&gt;][&lt;a href=&quot;https://gist.github.com/fstab/ce805d3001600ac147b79d413668770d&quot;&gt;2&lt;/a&gt;] for you. You can easily set up your matrix account and use with Freenode. You won’t miss a single message from now.&lt;/p&gt;
+
+&lt;p&gt;What about 3? Unfortunately, 3 is a fact and cannot be resolved. But, believe me. I have seen many debates, discussions, etc. that went really well without threads. IRC is a good tool and it is easy to explain.&lt;/p&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="software" /><category term="irc" /><summary type="html">In this post, I’ll explain the misconceptions I had with IRC(Internet Relay Chat) and how I resolved them. This is not going to be a Slack vs IRC post and I won’t be talking about good things about either of them. Instead, I’ll just say how I got my misconceptions resolved.</summary></entry><entry><title type="html">How I spent May 2018 on learning Databases</title><link href="https://themousepotato.github.io/posts/how-i-spent-may-2018-on-learning-databases" rel="alternate" type="text/html" title="How I spent May 2018 on learning Databases" /><published>2018-06-01T00:00:00-07:00</published><updated>2018-06-01T00:00:00-07:00</updated><id>https://themousepotato.github.io/posts/how-i-spent-may-2018-on-learning-databases</id><content type="html" xml:base="https://themousepotato.github.io/posts/how-i-spent-may-2018-on-learning-databases">&lt;p&gt;Databases are the backbone of any software (credits: &lt;a href=&quot;https://github.com/DefCon-007&quot;&gt;@DefCon-007&lt;/a&gt;). But, it took a lot of time for me to understand this. I never understood the exact differences between using a spreadsheet for storing details and a RDBMS before. So, I started to study databases in depth.&lt;/p&gt;
+
+&lt;h2 id=&quot;how-i-spent-may-2018-on-learning-databases&quot;&gt;How I spent May 2018 on learning Databases&lt;/h2&gt;
+&lt;hr /&gt;
+&lt;h3 id=&quot;understanding-concepts&quot;&gt;Understanding concepts&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/database-design.png&quot; alt=&quot;Database Design&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Prerequisites are necessary before diving into a specific technology. I had MySQL in my 10+2 syllabus and I mugged the queries without having a deep understanding on the concepts of SQL. I do know how to write queries to get some specific data but, I had no idea about database design at that time.&lt;/p&gt;
+
+&lt;p&gt;As recommended by &lt;a href=&quot;https://github.com/ghostwriternr/&quot;&gt;@ghostwriternr&lt;/a&gt;, I started watching a set of video tutorials on Database Design by Caleb Curry &lt;a href=&quot;https://www.youtube.com/watch?v=e7Pr1VgPK4w&amp;amp;index=1&amp;amp;list=PLlTjty5ceOnd-sCYEHlFO0JRg2liaFvxv&quot;&gt;here&lt;/a&gt;. I found this guy as super cool and highly contented. He explains each and every concepts in depth in a beginner friendly manner. I can’t even call it a lecture. It’s like your best friend teaching you a night before end sems. Very very user-friendly and informative.&lt;/p&gt;
+
+&lt;p&gt;I got a clear idea about the things to be taken care of while designing databases. Throughout this course, he keep on talking about Data Integrity and reducing Data Redundancy. Lack of them may lead to wrong results on executing queries. Breaking data into Atomic values is also a good practice. He also briefly talks about SQL queries and specific filters. He explains each concepts with proper examples which can easily make us grasp. After watching his videos you won’t be actually implementing anything but, will have a deeper understanding on RDBMS. Nobody can do this course without recommending to others.&lt;/p&gt;
+
+&lt;h3 id=&quot;peek-into-nosql-through-mongodb&quot;&gt;Peek into NoSQL through MongoDB&lt;/h3&gt;
+&lt;p&gt;I was in a mood to apply the concepts that I’ve learnt in Caleb’s course. So, do I need to start with SQL again? I asked myself. Nope. I’ve seen MongoDB in many CVs and it has recently been a buzzword. I started to learn it from the official courses as recommended by &lt;a href=&quot;https://github.com/icyflame&quot;&gt;@icyflame&lt;/a&gt;. I visited the MongoDB University &lt;a href=&quot;https://university.mongodb.com/&quot;&gt;website&lt;/a&gt; and selected the intro &lt;a href=&quot;https://university.mongodb.com/mercury/M001/2018_May&quot;&gt;course&lt;/a&gt;. It started on May 15 and suppose to end on June 5. They update their resources on weekly basis so that you can have plenty of time on experimenting yourselves and enough time to chill. The syllabus includes:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongo-syllabus.png&quot; alt=&quot;Syllabus of course&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;One of the major differences that I’ve found in MongoDB with SQL is it uses JSON files for storage which is cute. BSON(Binary JSON) if you want encryption. Also, it is not necessary for a database to have a fixed schema. This one will throw away the concepts of Views in SQL. In case you want to select particular fields, you can create a Projection in MongoDB. There are various operators and filters in MongoDB which makes it powerful to use. Instead of DDL and DML commands in SQL, MongoDB has CRUD operations. We can either use MongoDB Compass or Mongo Shell to execute our queries.&lt;/p&gt;
+
+&lt;p&gt;MongoDB Compass:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongodb-compass.png&quot; alt=&quot;MongoDB Compass&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Have a look at Mongo Shell:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongo-shell.png&quot; alt=&quot;Mongo Shell&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Mostly I was using the Mongo Shell. It is a powerful Javascript interpreter. I created a sandbox atlas cluster for my own experiments which had 512 MB of space and free of cost even though the course had a class cluster by default for learning purpose. The class cluster contained databases which included almost 2 million documents. eg: It contained a video database with a movie collection, a weather database, etc. I explored the huge data throgh MongoDB Compass which is the GUI tool for MongoDB. After connecting to a cluster, it allows us to do all CRUD operations and browse the huge database.&lt;/p&gt;
+
+&lt;p&gt;In case you are familiar with MongoDB, here is a problem for you.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongo-problem.png&quot; alt=&quot;MongoDB Problem&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here is my progess in the course:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongo-progress.png&quot; alt=&quot;Progress&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;At last certificate:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongo-certificate.png&quot; alt=&quot;(Certificate)&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you are planning to learn MongoDB, don’t forget to do this course. It’ll give you a good idea on MongoDB AFAIK.&lt;/p&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="software" /><category term="database" /><category term="mongodb" /><summary type="html">Databases are the backbone of any software (credits: @DefCon-007). But, it took a lot of time for me to understand this. I never understood the exact differences between using a spreadsheet for storing details and a RDBMS before. So, I started to study databases in depth.</summary></entry><entry><title type="html">5 Myths about dual booting</title><link href="https://themousepotato.github.io/posts/5-myths-about-dual-booting" rel="alternate" type="text/html" title="5 Myths about dual booting" /><published>2018-05-14T00:00:00-07:00</published><updated>2018-05-14T00:00:00-07:00</updated><id>https://themousepotato.github.io/posts/5-myths-about-dual-booting</id><content type="html" xml:base="https://themousepotato.github.io/posts/5-myths-about-dual-booting">&lt;p&gt;Dual booting a GNU/Linux distro with either Windows or Mac is an important step before ditching them. Don’t worry. Just kidding! It’s all up to you. Here, we’ll talk about 5 myths that are popular among the non-GNU/Linux users.&lt;/p&gt;
+
+&lt;h3 id=&quot;1-system-will-slow-down&quot;&gt;1. System will slow down!&lt;/h3&gt;
+&lt;p&gt;Surely, you must be kidding. Dual booting has nothing to do with your RAM. Only hard disk is being partitioned. You can allocate desired size to your partitions. It’s all in your hands.&lt;/p&gt;
+
+&lt;h3 id=&quot;2-process-is-too-complex&quot;&gt;2. Process is too complex!&lt;/h3&gt;
+&lt;p&gt;This is another one. If you aren’t a sysadmin, stay away from all these crap that affect your hard disk directly. Shut up! It is true that installing a distro alongside with your default one is not simple as a beginner. But, it’s not too complex or difficult to understand. If you find some time to learn new stuff, enthusiastic enough to break rules and have some courage to experiment, then you are welcome. Today there are several tutorials available to all type of users. It doesn’t matter whether you are a beginner, a noob or whatever.&lt;/p&gt;
+
+&lt;h3 id=&quot;3-highly-prone-to-driver-issues&quot;&gt;3. Highly prone to driver issues!&lt;/h3&gt;
+&lt;p&gt;Many of my friends complain that after dual booting they came across problems like “wifi stopped working”, “printers stopped working”, etc. It happens sometimes. But, there is a holy grail for each and every problem of you. You can report bugs at discussion groups like StackOverflow. Often by a Google search you will get a link to the solution from a discussion group without even asking it by yourself. Try executing the mentioned solutions only by counting the upvotes is the corresponding discussion site. You may have to find some time to fix those issues. But, believe me at last you’ll learn something new for sure.&lt;/p&gt;
+
+&lt;h3 id=&quot;4-battery-drains-too-fast&quot;&gt;4. Battery drains too fast!&lt;/h3&gt;
+&lt;p&gt;This is very funny. People often complain that their laptop’s battery drains too fast on using a GNU/Linux distro even with a single booted system. This is not true per se. If you are facing such issues, try installing some system monitoring programs. Stacer is one of them. You can disable the processes that you don’t require using these apps. They’ll show you the current running status graphically. You can easily understand which one is unnecessarily consuming your battery which you’ll be hardly using. For example, the bluetooth will be on by default. It consumes a lot of power.&lt;/p&gt;
+
+&lt;p&gt;This command is also worth giving a shot:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;$ sudo apt-get install tlp &amp;amp;&amp;amp; sudo tlp start&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;5-takes-time-to-boot&quot;&gt;5. Takes time to boot!&lt;/h3&gt;
+&lt;p&gt;Some devices will force you to disable Fast boot option in Windows for a successful dual boot. This has nothing to do with the new distro. It’s all decided by the Windows people. We cannot change that as long as they are proprietary.&lt;/p&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="booting" /><category term="software" /><summary type="html">Dual booting a GNU/Linux distro with either Windows or Mac is an important step before ditching them. Don’t worry. Just kidding! It’s all up to you. Here, we’ll talk about 5 myths that are popular among the non-GNU/Linux users.</summary></entry><entry><title type="html">An introduction to deployable robotics</title><link href="https://themousepotato.github.io/posts/introduction-to-deployable-robotics" rel="alternate" type="text/html" title="An introduction to deployable robotics" /><published>2018-04-11T00:00:00-07:00</published><updated>2018-04-11T00:00:00-07:00</updated><id>https://themousepotato.github.io/posts/ros-docker</id><content type="html" xml:base="https://themousepotato.github.io/posts/introduction-to-deployable-robotics">&lt;p&gt;Apps developed using the Robotic Operating System can be made repeatable and reproducible. Why don’t we make them deployable? Docker is a tool designed to make it easier to create, deploy, and run applications by using containers. Let’s ship our ROS app using Docker containers.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-is-docker-&quot;&gt;What is Docker ?&lt;/h3&gt;
+&lt;p&gt;Docker is a tool designed to make it easier to create, deploy, and run applications by using containers. Containers allow a developer to package up an application with all of the parts it needs, such as libraries and other dependencies, and ship it all out as one package. By doing so, thanks to the container, the developer can rest assured that the application will run on any other Linux machine regardless of any customized settings that machine might have that could differ from the machine used for writing and testing the code.&lt;/p&gt;
+
+&lt;p&gt;Unlike a virtual machine, rather than creating a whole virtual operating system, Docker allows applications to use the same Linux kernel as the system that they’re running on and only requires applications be shipped with things not already running on the host computer. This gives a significant performance boost and reduces the size of the application.&lt;/p&gt;
+
+&lt;h3 id=&quot;why-deploy-ros-apps&quot;&gt;Why deploy ROS apps?&lt;/h3&gt;
+&lt;p&gt;Apps developed using the Robotic Operating System can be made repeatable and reproducible. Why don’t we make them deployable? Let’s go through some hardware drivers which want to use ROS tools. They includes cameras, depth cameras, laser cameras, robots, audio, inertial units, GPS, joysticks. Sounds cool :stuck_out_tongue_winking_eye: !&lt;/p&gt;
+
+&lt;p&gt;There are variety of ROS ecosystems also. Have a look at them.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/TheMousePotato/ROSAppsDeployment/master/images/ecosyss.png&quot; alt=&quot;ROS ecosystems&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s try to combine our areas of interest. First have a look at a normal software development environment matrix.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://github.com/TheMousePotato/ROSAppsDeployment/raw/master/images/matrix1.png&quot; alt=&quot;Software development matrix&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now, see how the robotics development progress in a matrix:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://github.com/TheMousePotato/ROSAppsDeployment/raw/master/images/matrix2.png&quot; alt=&quot;Robotics development matrix&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Yuck! Too complex? Time has come to re-invent the convensional approach. The cool thing about docker is that a container has no need to account for the changes in another container. Let’s try to make it simpler to understand. I’m maintaining a container for running apps required for joystick(say). My friend does that for camera. Then, my friend don’t need to bother about dependencies for running my joystick apps. In the same way, I don’t have to keep track of his development. So, I only need to install the libraries for my peripheral and so as my friend. If we are not deploying it using containers, then we have to work on a single space with all the packages installed. The worst thing about this non-deployable robotics is we have to commit each and every update for the libraries unnecessarily. We need to look after the libraries which we have no point of interest. Through containers, things get more simplification. Now the interesting thing comes to action. Our peripherals can still communicate. How? Each container has got an IP address and Docker act as a pathway and provides several network topologies to connect our nodes. Wow! Let’s see it in action.&lt;/p&gt;
+
+&lt;h3 id=&quot;how-to-use-docker-to-ship-ros-apps&quot;&gt;How to use Docker to ship ROS apps?&lt;/h3&gt;
+&lt;p&gt;As we have learnt to make things easier so far, let’s try to implement it step by step. Links to installation and proxy setup for Docker are given in the end of this documentation. After that, let’s start.&lt;/p&gt;
+
+&lt;h4 id=&quot;volumes&quot;&gt;Volumes&lt;/h4&gt;
+&lt;p&gt;By default Docker uses &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/root/.ros/&lt;/code&gt; directory to keep track of the logs and debugging info. If you want to change it to your home directory(say ‘ubuntu’), perform :&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;$ docker run -v “/home/ubuntu/.ros/:/root/.ros/” ros&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;devices&quot;&gt;Devices&lt;/h4&gt;
+&lt;p&gt;Some application may require device access for acquiring images from connected cameras, control input from human interface device, or GPUS for hardware acceleration. This can be done using the –device run argument to mount the device inside the container, providing processes inside hardware access.&lt;/p&gt;
+
+&lt;h4 id=&quot;networks&quot;&gt;Networks&lt;/h4&gt;
+&lt;p&gt;Although one process per container is recommended, Docker networks can also be extended to use several running ROS apps. See documentation on &lt;a href=&quot;http://wiki.ros.org/ROS/NetworkSetup&quot;&gt;NetworkSetup&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;start-by-an-example&quot;&gt;Start by an example&lt;/h3&gt;
+&lt;p&gt;For the communication between our ROS nodes, there should be a virtual network. In this short example, we’ll create a virtual network, spin up a new container running roscore advertised as the master service on the new network, then spawn a message publisher and subscriber process as services on the same network.&lt;/p&gt;
+
+&lt;h4 id=&quot;build-image&quot;&gt;Build image&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Build a ROS image that includes ROS tutorials using this &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FROM ros:indigo-ros-base
+# install ros tutorials packages
+RUN apt-get update &amp;amp;&amp;amp; apt-get install -y \
+    ros-indigo-ros-tutorials \
+    ros-indigo-common-tutorials \
+    &amp;amp;&amp;amp; rm -rf /var/lib/apt/lists/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Then to build the image from within the same directory:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker build --tag ros:ros-tutorials .
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;create-network&quot;&gt;Create network&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;To create a new network foo, we use the network command:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker network create foo
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Now that we have a network, we can create services. Services advertise there location on the network, making it easy to resolve the location/address of the service specific container. We’ll use this make sure our ROS nodes can find and connect to our ROS master.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;run-services&quot;&gt;Run services&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;To create a container for the ROS master and advertise it’s service:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; docker run -it --rm \
+    --net foo \
+    --name master \
+    ros:ros-tutorials \
+    roscore
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Now you can see that master is running and is ready manage our other ROS nodes. To add our talker node, we’ll need to point the relevant environment variable to the master service:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker run -it --rm \
+    --net foo \
+    --name talker \
+    --env ROS_HOSTNAME=talker \
+    --env ROS_MASTER_URI=http://master:11311 \
+    ros:ros-tutorials \
+    rosrun roscpp_tutorials talker
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Then in another terminal, run the listener node similarly:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker run -it --rm \
+    --net foo \
+    --name listener \
+    --env ROS_HOSTNAME=listener \
+    --env ROS_MASTER_URI=http://master:11311 \
+    ros:ros-tutorials \
+    rosrun roscpp_tutorials listener
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Alright! You should see listener is now echoing each message the talker broadcasting. You can then list the containers and see something like this:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker service ls
+SERVICE ID          NAME                NETWORK             CONTAINER
+67ce73355e67        listener            foo                 a62019123321
+917ee622d295        master              foo                 f6ab9155fdbe
+7f5a4748fb8d        talker              foo                 e0da2ee7570a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;And for the services:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; docker ps
+CONTAINER ID        IMAGE               COMMAND                CREATED              STATUS              PORTS               NAMES
+a62019123321        ros:ros-tutorials   &quot;/ros_entrypoint.sh    About a minute ago   Up About a minute   11311/tcp           listener
+e0da2ee7570a        ros:ros-tutorials   &quot;/ros_entrypoint.sh    About a minute ago   Up About a minute   11311/tcp           talker
+f6ab9155fdbe        ros:ros-tutorials   &quot;/ros_entrypoint.sh    About a minute ago   Up About a minute   11311/tcp           master
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;introspection&quot;&gt;Introspection&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Ok, now that we see the two nodes are communicating, let get inside one of the containers and do some introspection what exactly the topics are:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker exec -it master bash
+  source /ros_entrypoint.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;If we then use rostopic to list published message topics, we should see something like this:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  rostopic list
+/chatter
+/rosout
+/rosout_agg
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;tear-down&quot;&gt;Tear down&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;To tear down the structure we’ve made, we just need to stop the containers and the services. We can stop and remove the containers using Ctrl^C where we launched the containers or using the stop command with the names we gave them:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker stop master talker listener
+  docker rm master talker listener
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;compose&quot;&gt;Compose&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Now that you have an appreciation for bootstrapping a distributed ROS example manually, lets try and automate it using docker-compose.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Start by making a folder named rostutorials and moving the Dockerfile we used earlier inside this directory. Then create a yaml file named docker-compose.yml in the same directory and paste the following inside:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;version: '2'
+services:
+  master:
+    build: .
+    container_name: master
+    command:
+      - roscore
+  
+  talker:
+    build: .
+    container_name: talker
+    environment:
+      - &quot;ROS_HOSTNAME=talker&quot;
+      - &quot;ROS_MASTER_URI=http://master:11311&quot;
+    command: rosrun roscpp_tutorials talker
+  
+  listener:
+    build: .
+    container_name: listener
+    environment:
+      - &quot;ROS_HOSTNAME=listener&quot;
+      - &quot;ROS_MASTER_URI=http://master:11311&quot;
+    command: rosrun roscpp_tutorials listener
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Now from inside the same folder, use docker-copose to launch our ROS nodes and specify that they coexist on their own network:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker-compose up -d
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Notice that a new network named rostutorials_default has now been created, you can inspect it further with:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker network inspect rostutorials_default
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;We can monitor the logged output of each service, such as the listener node like so:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker-compose logs listener
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Finally, we can stop and remove all the relevant containers using docker-copose from the same directory:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker-compose stop
+  docker-compose rm
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note: the auto-generated network, rostutorials_default, will persist over the life of the docker engine or until you explicitly remove it using docker network rm.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;Let’s have a look at a funny cartoon on convensional approach on robotics.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://github.com/TheMousePotato/ROSAppsDeployment/raw/master/images/cartoon2.jpg&quot; alt=&quot;Cartoon making fun of convensional robotics&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now, see how it has changed.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://github.com/TheMousePotato/ROSAppsDeployment/raw/master/images/simplify.png&quot; alt=&quot;Image of deployable robotics&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;some-ros-apps-shipped-using-docker&quot;&gt;Some ROS apps shipped using Docker&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ruffsl/ros_caffe/tree/master/docker&quot;&gt;Caffe&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ruffsl/gazebo_docker_demos&quot;&gt;Gazemo demos&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;reference-and-further-reading&quot;&gt;Reference and further reading&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04&quot;&gt;Docker for beginners - tutorial by DigitalOcean&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/wsargent/docker-cheat-sheet&quot;&gt;Docker cheatsheet&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/23111631/cannot-download-docker-images-behind-a-proxy&quot;&gt;Configuring network proxy for using Docker&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://registry.hub.docker.com/_/ros/&quot;&gt;Official Docker library for ROS&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.docker.com/samples/library/ros/&quot;&gt;Official documentation from Docker on ROS&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://wiki.ros.org/docker&quot;&gt;Official documentation from ROS on Docker&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.osrfoundation.org/&quot;&gt;Official website of Open Robotics&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://rosorg.slack.com/messages/docker/&quot;&gt;Docker on ROS slack channel&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://answers.ros.org/questions/scope:all/sort:activity-desc/tags:Docker/page:1/&quot;&gt;FAQ on Docker at ROS website&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="ros" /><category term="docker" /><category term="robotics" /><summary type="html">Apps developed using the Robotic Operating System can be made repeatable and reproducible. Why don’t we make them deployable? Docker is a tool designed to make it easier to create, deploy, and run applications by using containers. Let’s ship our ROS app using Docker containers.</summary></entry></feed>

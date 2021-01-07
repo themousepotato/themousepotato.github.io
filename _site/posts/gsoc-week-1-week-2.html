@@ -1,0 +1,635 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+
+<meta charset="utf-8">
+
+
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>GSoC Week 1 - Week 2 - Navaneeth Suresh</title>
+
+
+
+
+
+
+
+<meta property="og:locale" content="en-US">
+<meta property="og:site_name" content="Navaneeth Suresh">
+<meta property="og:title" content="GSoC Week 1 - Week 2">
+
+
+  <link rel="canonical" href="https://themousepotato.github.io/posts/gsoc-week-1-week-2">
+  <meta property="og:url" content="https://themousepotato.github.io/posts/gsoc-week-1-week-2">
+
+
+
+  <meta property="og:description" content="I had to work on implementing functionality to store unresolved merge-states. After interacting with the community, most of the people voted for an approach that I hadn’t thought much of. It was to add an --unresolved flag to hg shelve and hg unshelve commands. @marmoute advised me to study the current storage format of mergestate in depth and send a patch to the core to add an internals.mergestate help entry. I sent a patch[1] for that in the very first day itself.">
+
+
+
+
+
+  
+
+  
+
+
+
+
+
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2019-06-07T00:00:00-07:00">
+
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "Navaneeth Suresh",
+      "url" : "https://themousepotato.github.io",
+      "sameAs" : null
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+
+<link href="https://themousepotato.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="Navaneeth Suresh Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://themousepotato.github.io/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+    
+
+<!-- start custom head snippets -->
+
+<link rel="apple-touch-icon" sizes="57x57" href="https://themousepotato.github.io/images/apple-touch-icon-57x57.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="60x60" href="https://themousepotato.github.io/images/apple-touch-icon-60x60.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="72x72" href="https://themousepotato.github.io/images/apple-touch-icon-72x72.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="76x76" href="https://themousepotato.github.io/images/apple-touch-icon-76x76.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="114x114" href="https://themousepotato.github.io/images/apple-touch-icon-114x114.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="120x120" href="https://themousepotato.github.io/images/apple-touch-icon-120x120.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="144x144" href="https://themousepotato.github.io/images/apple-touch-icon-144x144.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="152x152" href="https://themousepotato.github.io/images/apple-touch-icon-152x152.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="180x180" href="https://themousepotato.github.io/images/apple-touch-icon-180x180.png?v=M44lzPylqQ">
+<link rel="icon" type="image/png" href="https://themousepotato.github.io/images/favicon-32x32.png?v=M44lzPylqQ" sizes="32x32">
+<link rel="icon" type="image/png" href="https://themousepotato.github.io/images/android-chrome-192x192.png?v=M44lzPylqQ" sizes="192x192">
+<link rel="icon" type="image/png" href="https://themousepotato.github.io/images/favicon-96x96.png?v=M44lzPylqQ" sizes="96x96">
+<link rel="icon" type="image/png" href="https://themousepotato.github.io/images/favicon-16x16.png?v=M44lzPylqQ" sizes="16x16">
+<link rel="manifest" href="https://themousepotato.github.io/images/manifest.json?v=M44lzPylqQ">
+<link rel="mask-icon" href="https://themousepotato.github.io/images/safari-pinned-tab.svg?v=M44lzPylqQ" color="#000000">
+<link rel="shortcut icon" href="/images/favicon.ico?v=M44lzPylqQ">
+<meta name="msapplication-TileColor" content="#000000">
+<meta name="msapplication-TileImage" content="https://themousepotato.github.io/images/mstile-144x144.png?v=M44lzPylqQ">
+<meta name="msapplication-config" content="https://themousepotato.github.io/images/browserconfig.xml?v=M44lzPylqQ">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="https://themousepotato.github.io/assets/css/academicons.css"/>
+
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <button><div class="navicon"></div></button>
+        <ul class="visible-links">
+          <li class="masthead__menu-item masthead__menu-item--lg"><a href="https://themousepotato.github.io/">Navaneeth Suresh</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="https://themousepotato.github.io/year-archive/">Blog Posts</a></li>
+          
+        </ul>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <div class="sidebar sticky">
+  
+
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  <div class="author__avatar">
+    
+    	<img src="https://themousepotato.github.io/images/me.jpg" class="author__avatar" alt="Navaneeth Suresh">
+    
+  </div>
+
+  <div class="author__content">
+    <h3 class="author__name">Navaneeth Suresh</h3>
+    <p class="author__bio">Fourth year undergraduate student at Indian Institute of Technology Kharagpur</p>
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> Kharagpur, India</li>
+      
+      
+      
+      
+        <li><a href="mailto:navaneeths1998@gmail.com"><i class="fas fa-fw fa-envelope" aria-hidden="true"></i> Email</a></li>
+      
+      
+       
+      
+        <li><a href="https://twitter.com/_themousepotato"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+      
+      
+      
+      
+        <li><a href="https://www.linkedin.com/in/navaneethsuresh"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+      
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/themousepotato"><i class="fab fa-fw fa-github" aria-hidden="true"></i> Github</a></li>
+      
+      
+      
+      
+      
+      
+      
+        <li><a href="https://steamcommunity.com/id/_nns"><i class="fab fa-fw fa-steam-square" aria-hidden="true"></i> Steam</a></li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="GSoC Week 1 - Week 2">
+    <meta itemprop="description" content="I had to work on implementing functionality to store unresolved merge-states. After interacting with the community, most of the people voted for an approach that I hadn’t thought much of. It was to add an --unresolved flag to hg shelve and hg unshelve commands. @marmoute advised me to study the current storage format of mergestate in depth and send a patch to the core to add an internals.mergestate help entry. I sent a patch[1] for that in the very first day itself.">
+    <meta itemprop="datePublished" content="June 07, 2019">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">GSoC Week 1 - Week 2
+</h1>
+          
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  4 minute read
+	
+</p>
+          
+        
+        
+        
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2019-06-07T00:00:00-07:00">June 07, 2019</time></p>
+        
+        
+             
+        
+    
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        <p>I had to work on implementing functionality to store unresolved merge-states. After interacting with the community, most of the people voted for an approach that I hadn’t thought much of. It was to add an <code class="language-plaintext highlighter-rouge">--unresolved</code> flag to <code class="language-plaintext highlighter-rouge">hg shelve</code> and <code class="language-plaintext highlighter-rouge">hg unshelve</code> commands. @marmoute advised me to study the current storage format of mergestate in depth and send a patch to the core to add an <code class="language-plaintext highlighter-rouge">internals.mergestate</code> help entry. I sent a patch<a href="https://phab.mercurial-scm.org/D6448">[1]</a> for that in the very first day itself.</p>
+
+<p>Before sending patches directly to the core, it was necessary to experiment with the ideas that I had and test them. My mentor @pulkit adviced me to bootstrap my implementation as an extension and push changes to my clone<a href="https://bitbucket.org/navaneethsuresh/hg/src/default/">[2]</a> of hg on bitbucket. I pushed two commits. One<a href="https://bitbucket.org/navaneethsuresh/hg/commits/5a4358258d60ab26bf9863b99ca6bf4c33dd8c31">[3]</a> of them added an <code class="language-plaintext highlighter-rouge">--unresolved</code> flag to <code class="language-plaintext highlighter-rouge">hg commit</code> which made to commit unresolved merge and the other<a href="https://bitbucket.org/navaneethsuresh/hg/commits/650d3ac7328a4f88ef005aacce8ef2d261fa820f">[4]</a> added a new command <code class="language-plaintext highlighter-rouge">hg commit-unresolved</code> to make the user get back to the old unresolved merge-state. I received good reviews from my mentor for both of them. Writing a new extension to mercurial and integrate it over there was much easier than I thought. The wiki had a nice page<a href="https://www.mercurial-scm.org/wiki/WritingExtensions">[5]</a> for that. I followed those instructions to set up new extensions without making the main codebase buggy. We can also bootstrap a flag as an extension.</p>
+
+<p>The next week, I worked on adding the flag <code class="language-plaintext highlighter-rouge">--unresolved</code> to both <code class="language-plaintext highlighter-rouge">hg shelve</code> and <code class="language-plaintext highlighter-rouge">hg unshelve</code> commands. This changed their behaviour to handle unresolved merge-states with a simple hack. I used the already stored mergestate information. I have sent two patches to the core after implementing one<a href="https://phab.mercurial-scm.org/D6478">[6]</a> for shelve and another<a href="https://phab.mercurial-scm.org/D6479">[7]</a> for unshelve.</p>
+
+<h2 id="changing-the-behavior-of-shelve">Changing the behavior of shelve</h2>
+<p>Shelving was aborted when a merge is in progress. I had to stop this abort and allow it to continue when called with an <code class="language-plaintext highlighter-rouge">--unresolved</code> flag. Then, after locking the repo, an extra mapping <code class="language-plaintext highlighter-rouge">{'unresolved-merge': True}</code> is added to the shelve changeset. Finally, the usual merge-state information is moved to a new place <code class="language-plaintext highlighter-rouge">.hg/merge-unresolved</code>. The following code made that work.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">unresolved</span><span class="p">:</span>
+    <span class="n">extra</span><span class="p">[</span><span class="s">'unresolved-merge'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="n">repo</span><span class="p">.</span><span class="n">vfs</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">'merge-unresolved'</span><span class="p">)):</span>
+        <span class="n">util</span><span class="p">.</span><span class="n">makedir</span><span class="p">(</span><span class="n">repo</span><span class="p">.</span><span class="n">vfs</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">'merge-unresolved'</span><span class="p">),</span> <span class="bp">False</span><span class="p">)</span>
+    <span class="n">util</span><span class="p">.</span><span class="n">rename</span><span class="p">(</span><span class="n">repo</span><span class="p">.</span><span class="n">vfs</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">'merge'</span><span class="p">),</span>
+                <span class="n">repo</span><span class="p">.</span><span class="n">vfs</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">'merge-unresolved/%s/'</span> <span class="o">%</span> <span class="n">name</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="changing-the-behaviour-of-unshelve">Changing the behaviour of unshelve</h2>
+<p>Unshelve should update the working directory to the old unresolved merge-state. But, one problem with this is what the UI should be when the user has commits on the top of the shelved unresolved merge-state. The user has to be in one of the merge parents of the stored shelve in order to restore the unresolved merge-state. Also, <code class="language-plaintext highlighter-rouge">hg unshelve --unresolved</code> will abort on a dirty working directory. The following steps are taken by unshelve to get back to the stored unresolved merge-state.</p>
+
+<ol>
+  <li>
+    <p>If the user has committed new changesets after shelving the changes, they must update the working directory to one of the merge parents.</p>
+  </li>
+  <li>
+    <p>Internally, merge <code class="language-plaintext highlighter-rouge">p1</code> with <code class="language-plaintext highlighter-rouge">p2</code> with the merge tool <code class="language-plaintext highlighter-rouge">:fail</code>. This will not update the contents of the files with conflicting changes. Instead, it will mark them as unresolved.</p>
+  </li>
+  <li>
+    <p>This internal merge will also mark the files which are already resolved by the user in the unresolved shelve changeset as unresolved. But, we will move the contents of <code class="language-plaintext highlighter-rouge">$HGRCPATH/merge-unresolved/&lt;basename&gt;/</code> to <code class="language-plaintext highlighter-rouge">$HGRCPATH/merge/</code> so that we can restore the partially resolved states.</p>
+  </li>
+  <li>
+    <p>We now have a state in which files marked as resolved might have conflicts. But, we will apply the changes in shelve on the top of this so that we can get our old unresolved merge again by the usual <code class="language-plaintext highlighter-rouge">unshelve</code> mechanism. The usual rebase step is avoided on unresolved shelve changesets.</p>
+  </li>
+</ol>
+
+<p>I wrote a new function <code class="language-plaintext highlighter-rouge">shelve.restoreunresolvedshelve()</code> to get this work as:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">restoreunresolvedshelve</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">ui</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">pctx</span><span class="p">,</span> <span class="n">shelvectx</span><span class="p">):</span>
+    <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">shelvectx</span><span class="p">.</span><span class="n">parents</span><span class="p">()</span>
+    <span class="n">overrides</span> <span class="o">=</span> <span class="p">{(</span><span class="s">'ui'</span><span class="p">,</span> <span class="s">'forcemerge'</span><span class="p">):</span> <span class="s">':fail'</span><span class="p">}</span>
+    <span class="c1"># Rather than attempting to merge files that were modified on
+</span>    <span class="c1"># both branches, `:fail` marks them as unresolved.
+</span>    <span class="c1"># This will also mark resolved files in unresolved shelvectx as
+</span>    <span class="c1"># unresolved. We'll restore their status and content later.
+</span>    <span class="k">with</span> <span class="n">ui</span><span class="p">.</span><span class="n">configoverride</span><span class="p">(</span><span class="n">overrides</span><span class="p">,</span> <span class="s">'unshelve'</span><span class="p">):</span>
+        <span class="c1"># dirstate can be either p1 or p2.
+</span>        <span class="n">targetctx</span> <span class="o">=</span> <span class="n">p2</span>
+        <span class="k">if</span> <span class="n">pctx</span><span class="p">.</span><span class="n">node</span><span class="p">()</span> <span class="o">==</span> <span class="n">p2</span><span class="p">.</span><span class="n">node</span><span class="p">():</span>
+            <span class="n">targetctx</span> <span class="o">=</span> <span class="n">p1</span>
+        <span class="n">merge</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">targetctx</span><span class="p">,</span> <span class="n">branchmerge</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mergeforce</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                     <span class="n">force</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="n">repo</span><span class="p">.</span><span class="n">vfs</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">'merge-unresolved'</span><span class="p">)):</span>
+        <span class="n">util</span><span class="p">.</span><span class="n">makedir</span><span class="p">(</span><span class="n">repo</span><span class="p">.</span><span class="n">vfs</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">'merge-unresolved'</span><span class="p">),</span> <span class="bp">False</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="p">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">repo</span><span class="p">.</span><span class="n">vfs</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">'merge'</span><span class="p">))</span>
+    <span class="c1"># Replace `merge/` with `merge-unresolved/&lt;basename&gt;/` to
+</span>    <span class="c1"># restore the status of resolved files in shelvectx.
+</span>    <span class="n">util</span><span class="p">.</span><span class="n">rename</span><span class="p">(</span><span class="n">repo</span><span class="p">.</span><span class="n">vfs</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">'merge-unresolved/%s/'</span> <span class="o">%</span> <span class="n">basename</span><span class="p">),</span>
+                <span class="n">repo</span><span class="p">.</span><span class="n">vfs</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">'merge'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Now that I have a fully functioning UI with the proposed method. However, the end-goal of the project is to transmit these stored unresolved merge-states across repositories. For that, I would have to store data in changeset level. Now, I shall wait for reviews from the community on the current approach and will start working on storing data in a changeset level from next week.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="https://themousepotato.github.io/tags/#gsoc" class="page__taxonomy-item" rel="tag">gsoc</a><span class="sep">, </span>
+    
+      
+      
+      <a href="https://themousepotato.github.io/tags/#software" class="page__taxonomy-item" rel="tag">software</a>
+    
+    </span>
+  </p>
+
+
+
+
+      </footer>
+
+      
+
+<section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=https://themousepotato.github.io/posts/gsoc-week-1-week-2" class="btn btn--twitter" title="Share on Twitter"><i class="fab fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https://themousepotato.github.io/posts/gsoc-week-1-week-2" class="btn btn--facebook" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://themousepotato.github.io/posts/gsoc-week-1-week-2" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+      
+
+
+  <nav class="pagination">
+    
+      <a href="https://themousepotato.github.io/posts/gsoc-coding-period-begins" class="pagination--pager" title="GSoC - Coding Period begins
+">Previous</a>
+    
+    
+      <a href="https://themousepotato.github.io/posts/gsoc-week-3-week-4" class="pagination--pager" title="GSoC Week 3 - Week 4
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      
+        <h4 class="page__related-title">You May Also Enjoy</h4>
+      
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://themousepotato.github.io/posts/gsoc-final" rel="permalink">GSoC final blog posts
+</a>
+      
+    </h2>
+    
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  less than 1 minute read
+	
+</p>
+    
+
+        
+         <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2019-08-25T00:00:00-07:00">August 25, 2019</time></p>
+        
+
+    <!--
+    <p class="archive__item-excerpt" itemprop="description"><p>I was also writing on the PSF site about my progress in GSoC. So, I decided to migrate to that fully since it keeps an overview of the work that I’ve done. If you’re interested in reading about that, refer my <a href="https://blogs.python-gsoc.org/en/navaneethsureshs-blog/">blog</a> on the PSF site.</p>
+</p>
+    -->
+    
+    
+
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://themousepotato.github.io/posts/gsoc-week-5-week-6" rel="permalink">GSoC Week 5 - Week 6
+</a>
+      
+    </h2>
+    
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  1 minute read
+	
+</p>
+    
+
+        
+         <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2019-07-08T00:00:00-07:00">July 08, 2019</time></p>
+        
+
+    <!--
+    <p class="archive__item-excerpt" itemprop="description"><p>I was working on adding interactive mode to <code class="language-plaintext highlighter-rouge">hg unshelve</code>. Until now, we cannot unshelve selected changes only from the stored shelve. We already have an interactive mode in <code class="language-plaintext highlighter-rouge">hg shelve</code>. I sent a patch<a href="https://phab.mercurial-scm.org/D6596">[1]</a> to add interactive mode to <code class="language-plaintext highlighter-rouge">unshelve</code></p>
+
+</p>
+    -->
+    
+    
+
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://themousepotato.github.io/posts/gsoc-week-3-week-4" rel="permalink">GSoC Week 3 - Week 4
+</a>
+      
+    </h2>
+    
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  1 minute read
+	
+</p>
+    
+
+        
+         <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2019-06-24T00:00:00-07:00">June 24, 2019</time></p>
+        
+
+    <!--
+    <p class="archive__item-excerpt" itemprop="description"><p>First two weeks of the coding period went well and I had sent a patch on the first prototype of the functionality that I have coded up. I had only used the usual mergestate format for that. Starting from week 3, I worked on storing mergestate records in the changeset extras so that it can be exchanged to other repositories. I updated the patch that I had sent here<a href="https://phab.mercurial-scm.org/D6479">[1]</a>. Also, the patch<a href="https://phab.mercurial-scm.org/D6448">[2]</a> which added documentation on <code class="language-plaintext highlighter-rouge">internals.mergestate</code> got merged too.</p>
+
+</p>
+    -->
+    
+    
+
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://themousepotato.github.io/posts/gsoc-coding-period-begins" rel="permalink">GSoC - Coding Period begins
+</a>
+      
+    </h2>
+    
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  3 minute read
+	
+</p>
+    
+
+        
+         <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2019-05-27T00:00:00-07:00">May 27, 2019</time></p>
+        
+
+    <!--
+    <p class="archive__item-excerpt" itemprop="description"><p>The community bonding period had ended on May 26th. I utilized this period to discuss my project even more deeper with the community with my proposed implementations. Unfortunately, my proposed method in my official gsoc proposal had a different approach in the UI level. However, the basic things remain the same. People who are familiar with internals came with suggestions and the methods got changed based on their suggestions. I had a video conference with my mentors and they helped me to have a good kickstart with the project. I spent most of the time reading the codebase and splitting the plan of implementation even deeper.</p>
+
+</p>
+    -->
+    
+    
+
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+
+        
+
+<div class="page__footer-follow">
+
+<div class="page__footer-copyright">&copy; 2021 Navaneeth Suresh. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/academicpages/academicpages.github.io">AcademicPages</a>, a fork of <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+</div>
+
+      </footer>
+    </div>
+
+    <script src="https://themousepotato.github.io/assets/js/main.min.js"></script>
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+  </body>
+</html>
+

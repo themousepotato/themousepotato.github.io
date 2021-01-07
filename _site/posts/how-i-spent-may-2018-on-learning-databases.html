@@ -1,0 +1,623 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+
+<meta charset="utf-8">
+
+
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>How I spent May 2018 on learning Databases - Navaneeth Suresh</title>
+
+
+
+
+
+
+
+<meta property="og:locale" content="en-US">
+<meta property="og:site_name" content="Navaneeth Suresh">
+<meta property="og:title" content="How I spent May 2018 on learning Databases">
+
+
+  <link rel="canonical" href="https://themousepotato.github.io/posts/how-i-spent-may-2018-on-learning-databases">
+  <meta property="og:url" content="https://themousepotato.github.io/posts/how-i-spent-may-2018-on-learning-databases">
+
+
+
+  <meta property="og:description" content="Databases are the backbone of any software (credits: @DefCon-007). But, it took a lot of time for me to understand this. I never understood the exact differences between using a spreadsheet for storing details and a RDBMS before. So, I started to study databases in depth.">
+
+
+
+
+
+  
+
+  
+
+
+
+
+
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2018-06-01T00:00:00-07:00">
+
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "Navaneeth Suresh",
+      "url" : "https://themousepotato.github.io",
+      "sameAs" : null
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+
+<link href="https://themousepotato.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="Navaneeth Suresh Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://themousepotato.github.io/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+    
+
+<!-- start custom head snippets -->
+
+<link rel="apple-touch-icon" sizes="57x57" href="https://themousepotato.github.io/images/apple-touch-icon-57x57.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="60x60" href="https://themousepotato.github.io/images/apple-touch-icon-60x60.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="72x72" href="https://themousepotato.github.io/images/apple-touch-icon-72x72.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="76x76" href="https://themousepotato.github.io/images/apple-touch-icon-76x76.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="114x114" href="https://themousepotato.github.io/images/apple-touch-icon-114x114.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="120x120" href="https://themousepotato.github.io/images/apple-touch-icon-120x120.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="144x144" href="https://themousepotato.github.io/images/apple-touch-icon-144x144.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="152x152" href="https://themousepotato.github.io/images/apple-touch-icon-152x152.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="180x180" href="https://themousepotato.github.io/images/apple-touch-icon-180x180.png?v=M44lzPylqQ">
+<link rel="icon" type="image/png" href="https://themousepotato.github.io/images/favicon-32x32.png?v=M44lzPylqQ" sizes="32x32">
+<link rel="icon" type="image/png" href="https://themousepotato.github.io/images/android-chrome-192x192.png?v=M44lzPylqQ" sizes="192x192">
+<link rel="icon" type="image/png" href="https://themousepotato.github.io/images/favicon-96x96.png?v=M44lzPylqQ" sizes="96x96">
+<link rel="icon" type="image/png" href="https://themousepotato.github.io/images/favicon-16x16.png?v=M44lzPylqQ" sizes="16x16">
+<link rel="manifest" href="https://themousepotato.github.io/images/manifest.json?v=M44lzPylqQ">
+<link rel="mask-icon" href="https://themousepotato.github.io/images/safari-pinned-tab.svg?v=M44lzPylqQ" color="#000000">
+<link rel="shortcut icon" href="/images/favicon.ico?v=M44lzPylqQ">
+<meta name="msapplication-TileColor" content="#000000">
+<meta name="msapplication-TileImage" content="https://themousepotato.github.io/images/mstile-144x144.png?v=M44lzPylqQ">
+<meta name="msapplication-config" content="https://themousepotato.github.io/images/browserconfig.xml?v=M44lzPylqQ">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="https://themousepotato.github.io/assets/css/academicons.css"/>
+
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <button><div class="navicon"></div></button>
+        <ul class="visible-links">
+          <li class="masthead__menu-item masthead__menu-item--lg"><a href="https://themousepotato.github.io/">Navaneeth Suresh</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="https://themousepotato.github.io/year-archive/">Blog Posts</a></li>
+          
+        </ul>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <div class="sidebar sticky">
+  
+
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  <div class="author__avatar">
+    
+    	<img src="https://themousepotato.github.io/images/me.jpg" class="author__avatar" alt="Navaneeth Suresh">
+    
+  </div>
+
+  <div class="author__content">
+    <h3 class="author__name">Navaneeth Suresh</h3>
+    <p class="author__bio">Fourth year undergraduate student at Indian Institute of Technology Kharagpur</p>
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> Kharagpur, India</li>
+      
+      
+      
+      
+        <li><a href="mailto:navaneeths1998@gmail.com"><i class="fas fa-fw fa-envelope" aria-hidden="true"></i> Email</a></li>
+      
+      
+       
+      
+        <li><a href="https://twitter.com/_themousepotato"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+      
+      
+      
+      
+        <li><a href="https://www.linkedin.com/in/navaneethsuresh"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+      
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/themousepotato"><i class="fab fa-fw fa-github" aria-hidden="true"></i> Github</a></li>
+      
+      
+      
+      
+      
+      
+      
+        <li><a href="https://steamcommunity.com/id/_nns"><i class="fab fa-fw fa-steam-square" aria-hidden="true"></i> Steam</a></li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="How I spent May 2018 on learning Databases">
+    <meta itemprop="description" content="Databases are the backbone of any software (credits: @DefCon-007). But, it took a lot of time for me to understand this. I never understood the exact differences between using a spreadsheet for storing details and a RDBMS before. So, I started to study databases in depth.">
+    <meta itemprop="datePublished" content="June 01, 2018">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">How I spent May 2018 on learning Databases
+</h1>
+          
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  4 minute read
+	
+</p>
+          
+        
+        
+        
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2018-06-01T00:00:00-07:00">June 01, 2018</time></p>
+        
+        
+             
+        
+    
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        <p>Databases are the backbone of any software (credits: <a href="https://github.com/DefCon-007">@DefCon-007</a>). But, it took a lot of time for me to understand this. I never understood the exact differences between using a spreadsheet for storing details and a RDBMS before. So, I started to study databases in depth.</p>
+
+<h2 id="how-i-spent-may-2018-on-learning-databases">How I spent May 2018 on learning Databases</h2>
+<hr />
+<h3 id="understanding-concepts">Understanding concepts</h3>
+<p><img src="https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/database-design.png" alt="Database Design" /></p>
+
+<p>Prerequisites are necessary before diving into a specific technology. I had MySQL in my 10+2 syllabus and I mugged the queries without having a deep understanding on the concepts of SQL. I do know how to write queries to get some specific data but, I had no idea about database design at that time.</p>
+
+<p>As recommended by <a href="https://github.com/ghostwriternr/">@ghostwriternr</a>, I started watching a set of video tutorials on Database Design by Caleb Curry <a href="https://www.youtube.com/watch?v=e7Pr1VgPK4w&amp;index=1&amp;list=PLlTjty5ceOnd-sCYEHlFO0JRg2liaFvxv">here</a>. I found this guy as super cool and highly contented. He explains each and every concepts in depth in a beginner friendly manner. I can’t even call it a lecture. It’s like your best friend teaching you a night before end sems. Very very user-friendly and informative.</p>
+
+<p>I got a clear idea about the things to be taken care of while designing databases. Throughout this course, he keep on talking about Data Integrity and reducing Data Redundancy. Lack of them may lead to wrong results on executing queries. Breaking data into Atomic values is also a good practice. He also briefly talks about SQL queries and specific filters. He explains each concepts with proper examples which can easily make us grasp. After watching his videos you won’t be actually implementing anything but, will have a deeper understanding on RDBMS. Nobody can do this course without recommending to others.</p>
+
+<h3 id="peek-into-nosql-through-mongodb">Peek into NoSQL through MongoDB</h3>
+<p>I was in a mood to apply the concepts that I’ve learnt in Caleb’s course. So, do I need to start with SQL again? I asked myself. Nope. I’ve seen MongoDB in many CVs and it has recently been a buzzword. I started to learn it from the official courses as recommended by <a href="https://github.com/icyflame">@icyflame</a>. I visited the MongoDB University <a href="https://university.mongodb.com/">website</a> and selected the intro <a href="https://university.mongodb.com/mercury/M001/2018_May">course</a>. It started on May 15 and suppose to end on June 5. They update their resources on weekly basis so that you can have plenty of time on experimenting yourselves and enough time to chill. The syllabus includes:</p>
+
+<p><img src="https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongo-syllabus.png" alt="Syllabus of course" /></p>
+
+<p>One of the major differences that I’ve found in MongoDB with SQL is it uses JSON files for storage which is cute. BSON(Binary JSON) if you want encryption. Also, it is not necessary for a database to have a fixed schema. This one will throw away the concepts of Views in SQL. In case you want to select particular fields, you can create a Projection in MongoDB. There are various operators and filters in MongoDB which makes it powerful to use. Instead of DDL and DML commands in SQL, MongoDB has CRUD operations. We can either use MongoDB Compass or Mongo Shell to execute our queries.</p>
+
+<p>MongoDB Compass:</p>
+
+<p><img src="https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongodb-compass.png" alt="MongoDB Compass" /></p>
+
+<p>Have a look at Mongo Shell:</p>
+
+<p><img src="https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongo-shell.png" alt="Mongo Shell" /></p>
+
+<p>Mostly I was using the Mongo Shell. It is a powerful Javascript interpreter. I created a sandbox atlas cluster for my own experiments which had 512 MB of space and free of cost even though the course had a class cluster by default for learning purpose. The class cluster contained databases which included almost 2 million documents. eg: It contained a video database with a movie collection, a weather database, etc. I explored the huge data throgh MongoDB Compass which is the GUI tool for MongoDB. After connecting to a cluster, it allows us to do all CRUD operations and browse the huge database.</p>
+
+<p>In case you are familiar with MongoDB, here is a problem for you.</p>
+
+<p><img src="https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongo-problem.png" alt="MongoDB Problem" /></p>
+
+<p>Here is my progess in the course:</p>
+
+<p><img src="https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongo-progress.png" alt="Progress" /></p>
+
+<p>At last certificate:</p>
+
+<p><img src="https://raw.githubusercontent.com/themousepotato/themousepotato.github.io/master/images/mongo-certificate.png" alt="(Certificate)" /></p>
+
+<p>If you are planning to learn MongoDB, don’t forget to do this course. It’ll give you a good idea on MongoDB AFAIK.</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="https://themousepotato.github.io/tags/#database" class="page__taxonomy-item" rel="tag">database</a><span class="sep">, </span>
+    
+      
+      
+      <a href="https://themousepotato.github.io/tags/#mongodb" class="page__taxonomy-item" rel="tag">mongodb</a><span class="sep">, </span>
+    
+      
+      
+      <a href="https://themousepotato.github.io/tags/#software" class="page__taxonomy-item" rel="tag">software</a>
+    
+    </span>
+  </p>
+
+
+
+
+      </footer>
+
+      
+
+<section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=https://themousepotato.github.io/posts/how-i-spent-may-2018-on-learning-databases" class="btn btn--twitter" title="Share on Twitter"><i class="fab fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https://themousepotato.github.io/posts/how-i-spent-may-2018-on-learning-databases" class="btn btn--facebook" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://themousepotato.github.io/posts/how-i-spent-may-2018-on-learning-databases" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+      
+
+
+  <nav class="pagination">
+    
+      <a href="https://themousepotato.github.io/posts/5-myths-about-dual-booting" class="pagination--pager" title="5 Myths about dual booting
+">Previous</a>
+    
+    
+      <a href="https://themousepotato.github.io/posts/irc-a-blessing-in-disguise" class="pagination--pager" title="IRC - A blessing in disguise
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      
+        <h4 class="page__related-title">You May Also Enjoy</h4>
+      
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://themousepotato.github.io/posts/gsoc-final" rel="permalink">GSoC final blog posts
+</a>
+      
+    </h2>
+    
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  less than 1 minute read
+	
+</p>
+    
+
+        
+         <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2019-08-25T00:00:00-07:00">August 25, 2019</time></p>
+        
+
+    <!--
+    <p class="archive__item-excerpt" itemprop="description"><p>I was also writing on the PSF site about my progress in GSoC. So, I decided to migrate to that fully since it keeps an overview of the work that I’ve done. If you’re interested in reading about that, refer my <a href="https://blogs.python-gsoc.org/en/navaneethsureshs-blog/">blog</a> on the PSF site.</p>
+</p>
+    -->
+    
+    
+
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://themousepotato.github.io/posts/gsoc-week-5-week-6" rel="permalink">GSoC Week 5 - Week 6
+</a>
+      
+    </h2>
+    
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  1 minute read
+	
+</p>
+    
+
+        
+         <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2019-07-08T00:00:00-07:00">July 08, 2019</time></p>
+        
+
+    <!--
+    <p class="archive__item-excerpt" itemprop="description"><p>I was working on adding interactive mode to <code class="language-plaintext highlighter-rouge">hg unshelve</code>. Until now, we cannot unshelve selected changes only from the stored shelve. We already have an interactive mode in <code class="language-plaintext highlighter-rouge">hg shelve</code>. I sent a patch<a href="https://phab.mercurial-scm.org/D6596">[1]</a> to add interactive mode to <code class="language-plaintext highlighter-rouge">unshelve</code></p>
+
+</p>
+    -->
+    
+    
+
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://themousepotato.github.io/posts/gsoc-week-3-week-4" rel="permalink">GSoC Week 3 - Week 4
+</a>
+      
+    </h2>
+    
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  1 minute read
+	
+</p>
+    
+
+        
+         <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2019-06-24T00:00:00-07:00">June 24, 2019</time></p>
+        
+
+    <!--
+    <p class="archive__item-excerpt" itemprop="description"><p>First two weeks of the coding period went well and I had sent a patch on the first prototype of the functionality that I have coded up. I had only used the usual mergestate format for that. Starting from week 3, I worked on storing mergestate records in the changeset extras so that it can be exchanged to other repositories. I updated the patch that I had sent here<a href="https://phab.mercurial-scm.org/D6479">[1]</a>. Also, the patch<a href="https://phab.mercurial-scm.org/D6448">[2]</a> which added documentation on <code class="language-plaintext highlighter-rouge">internals.mergestate</code> got merged too.</p>
+
+</p>
+    -->
+    
+    
+
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://themousepotato.github.io/posts/gsoc-week-1-week-2" rel="permalink">GSoC Week 1 - Week 2
+</a>
+      
+    </h2>
+    
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  4 minute read
+	
+</p>
+    
+
+        
+         <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2019-06-07T00:00:00-07:00">June 07, 2019</time></p>
+        
+
+    <!--
+    <p class="archive__item-excerpt" itemprop="description"><p>I had to work on implementing functionality to store unresolved merge-states. After interacting with the community, most of the people voted for an approach that I hadn’t thought much of. It was to add an <code class="language-plaintext highlighter-rouge">--unresolved</code> flag to <code class="language-plaintext highlighter-rouge">hg shelve</code> and <code class="language-plaintext highlighter-rouge">hg unshelve</code> commands. @marmoute advised me to study the current storage format of mergestate in depth and send a patch to the core to add an <code class="language-plaintext highlighter-rouge">internals.mergestate</code> help entry. I sent a patch<a href="https://phab.mercurial-scm.org/D6448">[1]</a> for that in the very first day itself.</p>
+
+</p>
+    -->
+    
+    
+
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+
+        
+
+<div class="page__footer-follow">
+
+<div class="page__footer-copyright">&copy; 2021 Navaneeth Suresh. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/academicpages/academicpages.github.io">AcademicPages</a>, a fork of <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+</div>
+
+      </footer>
+    </div>
+
+    <script src="https://themousepotato.github.io/assets/js/main.min.js"></script>
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+  </body>
+</html>
+
