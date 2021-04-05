@@ -8,7 +8,9 @@ redirect_from:
   - /about.html
 ---
 
-I am Navaneeth Suresh, a fourth year undergraduate student at [Indian Institute of Technology Kharagpur](http://iitkgp.ac.in/). I like to work on software development, computer vision and deep learning projects.
+I am Navaneeth Suresh, a fourth year undergrad at [IIT Kharagpur](http://iitkgp.ac.in/), where I was advised by [Pabitra Mitra](http://cse.iitkgp.ac.in/~pabitra/) for my thesis project on image super-resolution using generative adversarial networks. During my life at college, I used to spend time promoting open source awareness being a part of [Kharagpur Open Source Society](https://kossiitkgp.org/).
+
+I like to solve real-world problems using simple, reproducible and easy to understand code where I often tend to work on software engineering projects where I try to make computers reduce human workload and research projects in the intersection of computer vision and deep learning.
 
 Updates
 -------
