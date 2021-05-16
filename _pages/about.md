@@ -1,14 +1,14 @@
 ---
 permalink: /
-title: "Hi there!"
-excerpt: "About me"
+title: "About me"
+excerpt: ""
 author_profile: true
 redirect_from: 
   - /about/
   - /about.html
 ---
 
-I am Navaneeth Suresh, a senior undergrad at [IIT Kharagpur](http://iitkgp.ac.in/), where I was advised by [Pabitra Mitra](http://cse.iitkgp.ac.in/~pabitra/) for my thesis project on image super-resolution using generative adversarial networks. During my life at college, I used to spend time promoting open source awareness being a part of [Kharagpur Open Source Society](https://kossiitkgp.org/).
+I am a senior undergrad at [IIT Kharagpur](http://iitkgp.ac.in/), where I was advised by [Pabitra Mitra](http://cse.iitkgp.ac.in/~pabitra/) for my thesis project on image super-resolution using generative adversarial networks. During my life at college, I used to spend time promoting open source awareness being a part of [Kharagpur Open Source Society](https://kossiitkgp.org/).
 
 I like to solve real-world problems using simple, maintainable and readable code where I often work on software engineering projects trying to make computers reduce human workload and occasionally on research projects in the intersection of computer vision and deep learning.
 
