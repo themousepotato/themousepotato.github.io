@@ -68,7 +68,7 @@
         <li><a href="https://github.com/{{ author.github }}"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
       {% endif %}
       {% if author.goodreads %}
-        <li><a href="https://goodreads.com/{{ author.goodreads }}"><i class="fab fa-fw fa-goodreads" aria-hidden="true"></i> Goodreads</a></li>
+        <li><a href="https://goodreads.com/{{ author.goodreads }}"><i class="fab fa-fw fa-goodreads-g" aria-hidden="true"></i> Goodreads</a></li>
       {% endif %}
       {% if author.stackoverflow %}
         <li><a href="https://www.stackoverflow.com/users/{{ author.stackoverflow }}"><i class="fab fa-fw fa-stack-overflow" aria-hidden="true"></i> Stackoverflow</a></li>
@@ -87,6 +87,9 @@
       {% endif %}
       {% if author.steam %}
         <li><a href="https://steamcommunity.com/id/{{ author.steam }}"><i class="fab fa-fw fa-steam-square" aria-hidden="true"></i> Steam</a></li>
+      {% endif %}
+      {% if author.letterboxd %}
+        <li><a href="https://letterboxd.com/{{ author.letterboxd }}"><i class="fa fa-video" aria-hidden="true"></i> &nbsp;Letterboxd</a></li>
       {% endif %}
       {% if author.youtube %}
         <li><a href="https://www.youtube.com/user/{{ author.youtube }}"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> YouTube</a></li>
