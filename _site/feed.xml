@@ -1,4 +1,132 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.7">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-05-30T12:36:11-07:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Navaneeth Suresh</title><subtitle></subtitle><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><entry><title type="html">GSoC final blog posts</title><link href="http://localhost:4000/posts/gsoc-final" rel="alternate" type="text/html" title="GSoC final blog posts" /><published>2019-08-25T00:00:00-07:00</published><updated>2019-08-25T00:00:00-07:00</updated><id>http://localhost:4000/posts/gsoc-final</id><content type="html" xml:base="http://localhost:4000/posts/gsoc-final">&lt;p&gt;I was also writing on the PSF site about my progress in GSoC. So, I decided to migrate to that fully since it keeps an overview of the work that I’ve done. If you’re interested in reading about that, refer my &lt;a href=&quot;https://blogs.python-gsoc.org/en/navaneethsureshs-blog/&quot;&gt;blog&lt;/a&gt; on the PSF site.&lt;/p&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="gsoc" /><category term="software" /><summary type="html">I was also writing on the PSF site about my progress in GSoC. So, I decided to migrate to that fully since it keeps an overview of the work that I’ve done. If you’re interested in reading about that, refer my blog on the PSF site.</summary></entry><entry><title type="html">GSoC Week 5 - Week 6</title><link href="http://localhost:4000/posts/gsoc-week-5-week-6" rel="alternate" type="text/html" title="GSoC Week 5 - Week 6" /><published>2019-07-08T00:00:00-07:00</published><updated>2019-07-08T00:00:00-07:00</updated><id>http://localhost:4000/posts/gsoc-week-5-week-6</id><content type="html" xml:base="http://localhost:4000/posts/gsoc-week-5-week-6">&lt;p&gt;I was working on adding interactive mode to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hg unshelve&lt;/code&gt;. Until now, we cannot unshelve selected changes only from the stored shelve. We already have an interactive mode in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hg shelve&lt;/code&gt;. I sent a patch&lt;a href=&quot;https://phab.mercurial-scm.org/D6596&quot;&gt;[1]&lt;/a&gt; to add interactive mode to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unshelve&lt;/code&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.7">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-06-02T02:17:13-07:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Navaneeth Suresh</title><subtitle></subtitle><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><entry><title type="html">Indexing Ragged Arrays in Python</title><link href="http://localhost:4000/posts/indexing-ragged-arrays-in-python" rel="alternate" type="text/html" title="Indexing Ragged Arrays in Python" /><published>2021-06-02T00:00:00-07:00</published><updated>2021-06-02T00:00:00-07:00</updated><id>http://localhost:4000/posts/indexing-ragged-arrays-in-python</id><content type="html" xml:base="http://localhost:4000/posts/indexing-ragged-arrays-in-python">&lt;p&gt;This post is going to be a small attempt from my side to understand indexing ragged arrays and making that work with Python. Indexing a data structure is accessing its elements by making memory efficient. A ragged array or a jagged array is an array of arrays which the member arrays can be of different lengths. This is quite straightforward to implement when we think through Python.&lt;/p&gt;
+
+&lt;p&gt;Let’s try to write a simple custom &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RaggedArray&lt;/code&gt; class in Python which supports indexing.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;itertools&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;chain&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RaggedArray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__getitem__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;isinstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chain&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;from_iterable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;isinstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;tuple&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pos&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RaggedArray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([])&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 0
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 1
+&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'__main__'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here, we can access &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;arr[103847]&lt;/code&gt; to get the sequential &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;103847&lt;/code&gt; index, or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;arr[287, 326]&lt;/code&gt; to get element &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;326&lt;/code&gt; of subarray &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;287&lt;/code&gt;. We can do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;arr[i, j]&lt;/code&gt; in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(1)&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;arr[k]&lt;/code&gt; in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(n*n)&lt;/code&gt; time complexity. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chain.from_iterable&lt;/code&gt; creates a flattened array from the non-rectangular 2D array.&lt;/p&gt;
+
+&lt;p&gt;Let’s try to make this more efficient. We used Python lists in this example. Numpy is widely known for its multidimensional array object for holding homogeneously-typed numerical data and manipulating large numbers of values without writing inefficient python loops. Instead of creating copies, numpy uses views to access elements in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(1)&lt;/code&gt; time. However, a numpy array having arrays of different shapes is considered as a normal Python list and it’s not possible to form a view out of it since the data are not contiguous in memory and operations are not vectorized. Awkward array module supports views for ragged arrays. Now, let’s modify our &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RaggedArray&lt;/code&gt; class to use awkward arrays instead of Python lists.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;awkward&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RaggedArray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;awkward&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fromiter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__getitem__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;isinstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;# i: single index into a flattened view
+&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pos&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;farray&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flatten&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flatten&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flatten&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;farray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;isinstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;tuple&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;# i: grid index
+&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;# j: single index into a flattened grid
+&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pos&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;fgrid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flatten&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flatten&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fgrid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;c1&quot;&gt;# i: grid index
+&lt;/span&gt;                &lt;span class=&quot;c1&quot;&gt;# x, y, z: indices in a single grid
+&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pos&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;awkward&lt;/code&gt; module lets us to create a ragged array from a list using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;awkward.fromiter()&lt;/code&gt; function. Here, we also extended the indexing to 4 dimensions. Since we are using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;flatten()&lt;/code&gt; operation, it can access the elements in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(1)&lt;/code&gt; time.&lt;/p&gt;
+
+&lt;p&gt;This code is still inefficient since we’re using integers for indexing. We can use boolean arrays for more efficiency. Let’s try to write a simple &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Bitset&lt;/code&gt; class in Python which can support &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AND&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OR&lt;/code&gt; operations, takes a set of integers and prints the boolean values on call.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Bitset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bitset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_makebitset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__and__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bitset1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bitset2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bitset1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bitset2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Bitset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__or__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bitset1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bitset2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bitset1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bitset2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Bitset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__str__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bitset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;_makebitset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;bitset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;bitset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+ 
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bitset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bitset&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_makebitset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'{2, 5, 7}'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Bitset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 00100101
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'add 3'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 00110101
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'{2, 3, 5, 7} AND {2, 6, 7, 8}'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Bitset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 00100001
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'{2, 3, 5, 7} OR {2, 6, 7, 8}'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 001101111
+&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'__main__'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It internally uses a boolean list created from a set of integers. We can use this instead of integers as index. A more popular compressed index is Enhanced Word-Aligned Hybrid (EWAH) index. Its C++ implementation can be found &lt;a href=&quot;https://github.com/lemire/EWAHBoolArray&quot;&gt;here&lt;/a&gt;. It is used by a lot of popular softwares including git, yt, etc. &lt;a href=&quot;https://yt-project.org/&quot;&gt;yt&lt;/a&gt; uses it as a Cython wrapper. It is available as a Cython package &lt;a href=&quot;https://github.com/yt-project/ewah_bool_utils&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;https://en.wikipedia.org/wiki/Jagged_array&lt;/li&gt;
+  &lt;li&gt;https://scipy-cookbook.readthedocs.io/items/Indexing.html&lt;/li&gt;
+  &lt;li&gt;https://scipy-cookbook.readthedocs.io/items/ViewsVsCopies.html&lt;/li&gt;
+  &lt;li&gt;https://awkward-array.org/quickstart.html&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="python" /><category term="software" /><category term="indexing" /><category term="data" /><summary type="html">This post is going to be a small attempt from my side to understand indexing ragged arrays and making that work with Python. Indexing a data structure is accessing its elements by making memory efficient. A ragged array or a jagged array is an array of arrays which the member arrays can be of different lengths. This is quite straightforward to implement when we think through Python.</summary></entry><entry><title type="html">GSoC final blog posts</title><link href="http://localhost:4000/posts/gsoc-final" rel="alternate" type="text/html" title="GSoC final blog posts" /><published>2019-08-25T00:00:00-07:00</published><updated>2019-08-25T00:00:00-07:00</updated><id>http://localhost:4000/posts/gsoc-final</id><content type="html" xml:base="http://localhost:4000/posts/gsoc-final">&lt;p&gt;I was also writing on the PSF site about my progress in GSoC. So, I decided to migrate to that fully since it keeps an overview of the work that I’ve done. If you’re interested in reading about that, refer my &lt;a href=&quot;https://blogs.python-gsoc.org/en/navaneethsureshs-blog/&quot;&gt;blog&lt;/a&gt; on the PSF site.&lt;/p&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="gsoc" /><category term="software" /><summary type="html">I was also writing on the PSF site about my progress in GSoC. So, I decided to migrate to that fully since it keeps an overview of the work that I’ve done. If you’re interested in reading about that, refer my blog on the PSF site.</summary></entry><entry><title type="html">GSoC Week 5 - Week 6</title><link href="http://localhost:4000/posts/gsoc-week-5-week-6" rel="alternate" type="text/html" title="GSoC Week 5 - Week 6" /><published>2019-07-08T00:00:00-07:00</published><updated>2019-07-08T00:00:00-07:00</updated><id>http://localhost:4000/posts/gsoc-week-5-week-6</id><content type="html" xml:base="http://localhost:4000/posts/gsoc-week-5-week-6">&lt;p&gt;I was working on adding interactive mode to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hg unshelve&lt;/code&gt;. Until now, we cannot unshelve selected changes only from the stored shelve. We already have an interactive mode in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hg shelve&lt;/code&gt;. I sent a patch&lt;a href=&quot;https://phab.mercurial-scm.org/D6596&quot;&gt;[1]&lt;/a&gt; to add interactive mode to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unshelve&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;I started with adding selected files only as a baby step. I borrowed a function from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;uncommit&lt;/code&gt; extension called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_commitfiltered()&lt;/code&gt;. What it does was it created a new changeset excluding the given files. I modified it to include the given files to make it work for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unshelve&lt;/code&gt;. This function had the following syntax by default:&lt;/p&gt;
 
@@ -245,265 +373,4 @@ Mercurial ​ is a free, distributed source control management tool. It efficien
 &lt;/blockquote&gt;
 
 &lt;h3 id=&quot;5-takes-time-to-boot&quot;&gt;5. Takes time to boot!&lt;/h3&gt;
-&lt;p&gt;Some devices will force you to disable Fast boot option in Windows for a successful dual boot. This has nothing to do with the new distro. It’s all decided by the Windows people. We cannot change that as long as they are proprietary.&lt;/p&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="booting" /><category term="software" /><summary type="html">Dual booting a GNU/Linux distro with either Windows or Mac is an important step before ditching them. Don’t worry. Just kidding! It’s all up to you. Here, we’ll talk about 5 myths that are popular among the non-GNU/Linux users.</summary></entry><entry><title type="html">An introduction to deployable robotics</title><link href="http://localhost:4000/posts/introduction-to-deployable-robotics" rel="alternate" type="text/html" title="An introduction to deployable robotics" /><published>2018-04-11T00:00:00-07:00</published><updated>2018-04-11T00:00:00-07:00</updated><id>http://localhost:4000/posts/ros-docker</id><content type="html" xml:base="http://localhost:4000/posts/introduction-to-deployable-robotics">&lt;p&gt;Apps developed using the Robotic Operating System can be made repeatable and reproducible. Why don’t we make them deployable? Docker is a tool designed to make it easier to create, deploy, and run applications by using containers. Let’s ship our ROS app using Docker containers.&lt;/p&gt;
-
-&lt;h3 id=&quot;what-is-docker-&quot;&gt;What is Docker ?&lt;/h3&gt;
-&lt;p&gt;Docker is a tool designed to make it easier to create, deploy, and run applications by using containers. Containers allow a developer to package up an application with all of the parts it needs, such as libraries and other dependencies, and ship it all out as one package. By doing so, thanks to the container, the developer can rest assured that the application will run on any other Linux machine regardless of any customized settings that machine might have that could differ from the machine used for writing and testing the code.&lt;/p&gt;
-
-&lt;p&gt;Unlike a virtual machine, rather than creating a whole virtual operating system, Docker allows applications to use the same Linux kernel as the system that they’re running on and only requires applications be shipped with things not already running on the host computer. This gives a significant performance boost and reduces the size of the application.&lt;/p&gt;
-
-&lt;h3 id=&quot;why-deploy-ros-apps&quot;&gt;Why deploy ROS apps?&lt;/h3&gt;
-&lt;p&gt;Apps developed using the Robotic Operating System can be made repeatable and reproducible. Why don’t we make them deployable? Let’s go through some hardware drivers which want to use ROS tools. They includes cameras, depth cameras, laser cameras, robots, audio, inertial units, GPS, joysticks. Sounds cool :stuck_out_tongue_winking_eye: !&lt;/p&gt;
-
-&lt;p&gt;There are variety of ROS ecosystems also. Have a look at them.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/TheMousePotato/ROSAppsDeployment/master/images/ecosyss.png&quot; alt=&quot;ROS ecosystems&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Let’s try to combine our areas of interest. First have a look at a normal software development environment matrix.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://github.com/TheMousePotato/ROSAppsDeployment/raw/master/images/matrix1.png&quot; alt=&quot;Software development matrix&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Now, see how the robotics development progress in a matrix:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://github.com/TheMousePotato/ROSAppsDeployment/raw/master/images/matrix2.png&quot; alt=&quot;Robotics development matrix&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Yuck! Too complex? Time has come to re-invent the convensional approach. The cool thing about docker is that a container has no need to account for the changes in another container. Let’s try to make it simpler to understand. I’m maintaining a container for running apps required for joystick(say). My friend does that for camera. Then, my friend don’t need to bother about dependencies for running my joystick apps. In the same way, I don’t have to keep track of his development. So, I only need to install the libraries for my peripheral and so as my friend. If we are not deploying it using containers, then we have to work on a single space with all the packages installed. The worst thing about this non-deployable robotics is we have to commit each and every update for the libraries unnecessarily. We need to look after the libraries which we have no point of interest. Through containers, things get more simplification. Now the interesting thing comes to action. Our peripherals can still communicate. How? Each container has got an IP address and Docker act as a pathway and provides several network topologies to connect our nodes. Wow! Let’s see it in action.&lt;/p&gt;
-
-&lt;h3 id=&quot;how-to-use-docker-to-ship-ros-apps&quot;&gt;How to use Docker to ship ROS apps?&lt;/h3&gt;
-&lt;p&gt;As we have learnt to make things easier so far, let’s try to implement it step by step. Links to installation and proxy setup for Docker are given in the end of this documentation. After that, let’s start.&lt;/p&gt;
-
-&lt;h4 id=&quot;volumes&quot;&gt;Volumes&lt;/h4&gt;
-&lt;p&gt;By default Docker uses &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/root/.ros/&lt;/code&gt; directory to keep track of the logs and debugging info. If you want to change it to your home directory(say ‘ubuntu’), perform :&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;$ docker run -v “/home/ubuntu/.ros/:/root/.ros/” ros&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;devices&quot;&gt;Devices&lt;/h4&gt;
-&lt;p&gt;Some application may require device access for acquiring images from connected cameras, control input from human interface device, or GPUS for hardware acceleration. This can be done using the –device run argument to mount the device inside the container, providing processes inside hardware access.&lt;/p&gt;
-
-&lt;h4 id=&quot;networks&quot;&gt;Networks&lt;/h4&gt;
-&lt;p&gt;Although one process per container is recommended, Docker networks can also be extended to use several running ROS apps. See documentation on &lt;a href=&quot;http://wiki.ros.org/ROS/NetworkSetup&quot;&gt;NetworkSetup&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;start-by-an-example&quot;&gt;Start by an example&lt;/h3&gt;
-&lt;p&gt;For the communication between our ROS nodes, there should be a virtual network. In this short example, we’ll create a virtual network, spin up a new container running roscore advertised as the master service on the new network, then spawn a message publisher and subscriber process as services on the same network.&lt;/p&gt;
-
-&lt;h4 id=&quot;build-image&quot;&gt;Build image&lt;/h4&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Build a ROS image that includes ROS tutorials using this &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FROM ros:indigo-ros-base
-# install ros tutorials packages
-RUN apt-get update &amp;amp;&amp;amp; apt-get install -y \
-    ros-indigo-ros-tutorials \
-    ros-indigo-common-tutorials \
-    &amp;amp;&amp;amp; rm -rf /var/lib/apt/lists/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Then to build the image from within the same directory:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker build --tag ros:ros-tutorials .
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;create-network&quot;&gt;Create network&lt;/h4&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;To create a new network foo, we use the network command:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker network create foo
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Now that we have a network, we can create services. Services advertise there location on the network, making it easy to resolve the location/address of the service specific container. We’ll use this make sure our ROS nodes can find and connect to our ROS master.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;run-services&quot;&gt;Run services&lt;/h4&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;To create a container for the ROS master and advertise it’s service:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; docker run -it --rm \
-    --net foo \
-    --name master \
-    ros:ros-tutorials \
-    roscore
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Now you can see that master is running and is ready manage our other ROS nodes. To add our talker node, we’ll need to point the relevant environment variable to the master service:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker run -it --rm \
-    --net foo \
-    --name talker \
-    --env ROS_HOSTNAME=talker \
-    --env ROS_MASTER_URI=http://master:11311 \
-    ros:ros-tutorials \
-    rosrun roscpp_tutorials talker
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Then in another terminal, run the listener node similarly:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker run -it --rm \
-    --net foo \
-    --name listener \
-    --env ROS_HOSTNAME=listener \
-    --env ROS_MASTER_URI=http://master:11311 \
-    ros:ros-tutorials \
-    rosrun roscpp_tutorials listener
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Alright! You should see listener is now echoing each message the talker broadcasting. You can then list the containers and see something like this:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker service ls
-SERVICE ID          NAME                NETWORK             CONTAINER
-67ce73355e67        listener            foo                 a62019123321
-917ee622d295        master              foo                 f6ab9155fdbe
-7f5a4748fb8d        talker              foo                 e0da2ee7570a
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;And for the services:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; docker ps
-CONTAINER ID        IMAGE               COMMAND                CREATED              STATUS              PORTS               NAMES
-a62019123321        ros:ros-tutorials   &quot;/ros_entrypoint.sh    About a minute ago   Up About a minute   11311/tcp           listener
-e0da2ee7570a        ros:ros-tutorials   &quot;/ros_entrypoint.sh    About a minute ago   Up About a minute   11311/tcp           talker
-f6ab9155fdbe        ros:ros-tutorials   &quot;/ros_entrypoint.sh    About a minute ago   Up About a minute   11311/tcp           master
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;introspection&quot;&gt;Introspection&lt;/h4&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Ok, now that we see the two nodes are communicating, let get inside one of the containers and do some introspection what exactly the topics are:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker exec -it master bash
-  source /ros_entrypoint.sh
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;If we then use rostopic to list published message topics, we should see something like this:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  rostopic list
-/chatter
-/rosout
-/rosout_agg
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;tear-down&quot;&gt;Tear down&lt;/h4&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;To tear down the structure we’ve made, we just need to stop the containers and the services. We can stop and remove the containers using Ctrl^C where we launched the containers or using the stop command with the names we gave them:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker stop master talker listener
-  docker rm master talker listener
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;compose&quot;&gt;Compose&lt;/h4&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Now that you have an appreciation for bootstrapping a distributed ROS example manually, lets try and automate it using docker-compose.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Start by making a folder named rostutorials and moving the Dockerfile we used earlier inside this directory. Then create a yaml file named docker-compose.yml in the same directory and paste the following inside:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;version: '2'
-services:
-  master:
-    build: .
-    container_name: master
-    command:
-      - roscore
-  
-  talker:
-    build: .
-    container_name: talker
-    environment:
-      - &quot;ROS_HOSTNAME=talker&quot;
-      - &quot;ROS_MASTER_URI=http://master:11311&quot;
-    command: rosrun roscpp_tutorials talker
-  
-  listener:
-    build: .
-    container_name: listener
-    environment:
-      - &quot;ROS_HOSTNAME=listener&quot;
-      - &quot;ROS_MASTER_URI=http://master:11311&quot;
-    command: rosrun roscpp_tutorials listener
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;Now from inside the same folder, use docker-copose to launch our ROS nodes and specify that they coexist on their own network:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker-compose up -d
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Notice that a new network named rostutorials_default has now been created, you can inspect it further with:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker network inspect rostutorials_default
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;We can monitor the logged output of each service, such as the listener node like so:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker-compose logs listener
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Finally, we can stop and remove all the relevant containers using docker-copose from the same directory:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker-compose stop
-  docker-compose rm
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Note: the auto-generated network, rostutorials_default, will persist over the life of the docker engine or until you explicitly remove it using docker network rm.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
-&lt;p&gt;Let’s have a look at a funny cartoon on convensional approach on robotics.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://github.com/TheMousePotato/ROSAppsDeployment/raw/master/images/cartoon2.jpg&quot; alt=&quot;Cartoon making fun of convensional robotics&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Now, see how it has changed.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://github.com/TheMousePotato/ROSAppsDeployment/raw/master/images/simplify.png&quot; alt=&quot;Image of deployable robotics&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;some-ros-apps-shipped-using-docker&quot;&gt;Some ROS apps shipped using Docker&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/ruffsl/ros_caffe/tree/master/docker&quot;&gt;Caffe&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/ruffsl/gazebo_docker_demos&quot;&gt;Gazemo demos&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;reference-and-further-reading&quot;&gt;Reference and further reading&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04&quot;&gt;Docker for beginners - tutorial by DigitalOcean&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/wsargent/docker-cheat-sheet&quot;&gt;Docker cheatsheet&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/23111631/cannot-download-docker-images-behind-a-proxy&quot;&gt;Configuring network proxy for using Docker&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://registry.hub.docker.com/_/ros/&quot;&gt;Official Docker library for ROS&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.docker.com/samples/library/ros/&quot;&gt;Official documentation from Docker on ROS&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://wiki.ros.org/docker&quot;&gt;Official documentation from ROS on Docker&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.osrfoundation.org/&quot;&gt;Official website of Open Robotics&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://rosorg.slack.com/messages/docker/&quot;&gt;Docker on ROS slack channel&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://answers.ros.org/questions/scope:all/sort:activity-desc/tags:Docker/page:1/&quot;&gt;FAQ on Docker at ROS website&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="ros" /><category term="docker" /><category term="robotics" /><summary type="html">Apps developed using the Robotic Operating System can be made repeatable and reproducible. Why don’t we make them deployable? Docker is a tool designed to make it easier to create, deploy, and run applications by using containers. Let’s ship our ROS app using Docker containers.</summary></entry></feed>
+&lt;p&gt;Some devices will force you to disable Fast boot option in Windows for a successful dual boot. This has nothing to do with the new distro. It’s all decided by the Windows people. We cannot change that as long as they are proprietary.&lt;/p&gt;</content><author><name>Navaneeth Suresh</name><email>navaneeths1998@gmail.com</email></author><category term="booting" /><category term="software" /><summary type="html">Dual booting a GNU/Linux distro with either Windows or Mac is an important step before ditching them. Don’t worry. Just kidding! It’s all up to you. Here, we’ll talk about 5 myths that are popular among the non-GNU/Linux users.</summary></entry></feed>
