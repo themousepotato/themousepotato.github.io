@@ -436,6 +436,101 @@
 
     <h2 class="archive__item-title" itemprop="headline">
       
+        <a href="http://localhost:4000/posts/notes-on-profiling-python-code" rel="permalink">Notes on Profiling Python code
+</a>
+      
+    </h2>
+    
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  4 minute read
+	
+</p>
+    
+
+        
+         <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2021-07-21T00:00:00-07:00">July 21, 2021</time></p>
+        
+
+    <!--
+    <p class="archive__item-excerpt" itemprop="description"><p>Profiling is the process of dynamic program analysis that measures the space/time complexity of the functions, frequency and duration of function calls, etc. It gives us the idea about where can we modify the code to have maximum impact on the performance of the program. In this blog post, I try to explain how to set up profiling tools for a python code and how can we find the code snippet which we can improve upon. We want to reduce the number of calls to that function.</p>
+
+<p>There are numerous profling tools available for python out there. I use <code class="language-plaintext highlighter-rouge">yep</code>.</p>
+
+<h2 id="setting-up-yep">Setting up yep</h2>
+<p><code class="language-plaintext highlighter-rouge">yep</code> uses the <code class="language-plaintext highlighter-rouge">google-perftools</code> CPU profiler and depends on <code class="language-plaintext highlighter-rouge">pprof</code> for visualization. It profiles compiled code of C/C++/Fortran from the python interpreter.</p>
+
+<ul>
+  <li>Install <code class="language-plaintext highlighter-rouge">google-perftools</code> and <code class="language-plaintext highlighter-rouge">yep</code></li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo apt-get install google-perftools
+$ pip install yep
+</code></pre></div></div>
+
+<ul>
+  <li>Mark the region to profile</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">yep</span>
+
+<span class="n">yep</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="s">'perf.prof'</span><span class="p">)</span>
+<span class="c1"># Code to profile
+</span><span class="n">yep</span><span class="p">.</span><span class="n">stop</span><span class="p">()</span></code></pre></figure>
+
+<p>This will generate a <code class="language-plaintext highlighter-rouge">perf.prof</code> file which can be analysed using <code class="language-plaintext highlighter-rouge">pprof</code></p>
+
+<h2 id="setting-up-pprof-and-profiling">Setting up pprof and profiling</h2>
+<p><code class="language-plaintext highlighter-rouge">pprof</code> is a tool for visualization and analysis of profiling data. It can generate both text and graphical reports. It needs profiling sample in <a href="https://github.com/google/pprof/blob/master/proto/profile.proto">this</a> format which we’d generated using <code class="language-plaintext highlighter-rouge">yep</code>.</p>
+
+<ul>
+  <li>Install <code class="language-plaintext highlighter-rouge">pprof</code> and get report
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ go get -u github.com/google/pprof
+$ pprof -cum -text -lines perf.prof
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Now, let’s look at the report generated. It’ll have the fields - <code class="language-plaintext highlighter-rouge">flat</code>, <code class="language-plaintext highlighter-rouge">flat%</code>, <code class="language-plaintext highlighter-rouge">sum%</code>, <code class="language-plaintext highlighter-rouge">cum</code>, <code class="language-plaintext highlighter-rouge">cum%</code> and <code class="language-plaintext highlighter-rouge">context</code>. <code class="language-plaintext highlighter-rouge">flat</code> means the memory allocated and is held by the function. <code class="language-plaintext highlighter-rouge">cum</code> means the memory allocated by this function or the function that it called down the stack. <code class="language-plaintext highlighter-rouge">sum</code> means the memory spent by the previous lines. <code class="language-plaintext highlighter-rouge">context</code> means the line of code which has the corresponding call. A more detailed explanation can be found <a href="https://stackoverflow.com/a/56882137">here</a>.</p>
+
+<p>Here, we used <code class="language-plaintext highlighter-rouge">-cum</code> flag to have the entries sorted by the <code class="language-plaintext highlighter-rouge">cum</code> value. The first entry will have the greatest <code class="language-plaintext highlighter-rouge">cum</code> value. This will be a function that is down the stack(a c++ stl operation for example). We need to look for the routine that calls this function. To do that, we’ll look the <code class="language-plaintext highlighter-rouge">context</code> which has our code and that has <code class="language-plaintext highlighter-rouge">sum%</code> just greater than the maximum <code class="language-plaintext highlighter-rouge">cum%</code> we’d just found. This is because, if we think of the function calls as taking up time, we know that whatever calls the function that is taking up the time should be slightly more time-consuming than the function call itself. So, we can figure out the caller of the function by looking for something with a cumulative call time higher than it. The difference between <code class="language-plaintext highlighter-rouge">sum%</code> and <code class="language-plaintext highlighter-rouge">cum%</code> is the key since cumulative includes it and all of its sub-calls.</p>
+
+<p>I found it hard to digest this at first. Let’s talk through a real life example. Imagine you are spending time on your computer. There are various tasks you do at the computer - emails, coding, gaming, etc. The time you spend doing emails + coding + gaming is going to be slightly less than the time you spend at the computer, because of things like booting, navigating between menus, folders, etc. So if you are told, you spend Y amount of time doing X, you can see what contains X by looking one level up at the cumulative time total spent. If I told you, it looks like you spend 40min doing emails, what were you doing while doing emails, and you looked and saw, oh, I was at the computer for 41min, you could say, “That was part of my computer time”. Similarly, if we look at our routines, and the big time sink is taking X% of time, we want to look for the first routine that takes more than X%, because that’s likely to be the one that is calling it.</p>
+
+<h2 id="references">References</h2>
+<ul>
+  <li>Most of the things I’d said to elaborate were exactly words of <a href="https://matthewturk.github.io/">Matt</a> while he was trying to make me understand. I didn’t want those to get buried, so I’d decided to write this up and publish</li>
+  <li>https://gperftools.github.io/gperftools/cpuprofile.html</li>
+  <li>https://github.com/google/pprof</li>
+  <li>https://pypi.org/project/yep/</li>
+  <li>https://www.freecodecamp.org/news/how-i-investigated-memory-leaks-in-go-using-pprof-on-a-large-codebase-4bec4325e192/</li>
+  <li>https://v0dro.in/blog/2020/04/21/profiling-and-benchmarking-python-programs/</li>
+  <li>https://stackoverflow.com/a/56882137</li>
+</ul>
+</p>
+    -->
+    
+    
+
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+
+    <h2 class="archive__item-title" itemprop="headline">
+      
         <a href="http://localhost:4000/posts/indexing-ragged-arrays-in-python" rel="permalink">Indexing Ragged Arrays in Python
 </a>
       
@@ -542,49 +637,6 @@
 
     <!--
     <p class="archive__item-excerpt" itemprop="description"><p>I was working on adding interactive mode to <code class="language-plaintext highlighter-rouge">hg unshelve</code>. Until now, we cannot unshelve selected changes only from the stored shelve. We already have an interactive mode in <code class="language-plaintext highlighter-rouge">hg shelve</code>. I sent a patch<a href="https://phab.mercurial-scm.org/D6596">[1]</a> to add interactive mode to <code class="language-plaintext highlighter-rouge">unshelve</code></p>
-
-</p>
-    -->
-    
-    
-
-  </article>
-</div>
-
-        
-          
-
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
-    
-
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="http://localhost:4000/posts/gsoc-week-3-week-4" rel="permalink">GSoC Week 3 - Week 4
-</a>
-      
-    </h2>
-    
-    
-      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
-
-
-  
-	  1 minute read
-	
-</p>
-    
-
-        
-         <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2019-06-24T00:00:00-07:00">June 24, 2019</time></p>
-        
-
-    <!--
-    <p class="archive__item-excerpt" itemprop="description"><p>First two weeks of the coding period went well and I had sent a patch on the first prototype of the functionality that I have coded up. I had only used the usual mergestate format for that. Starting from week 3, I worked on storing mergestate records in the changeset extras so that it can be exchanged to other repositories. I updated the patch that I had sent here<a href="https://phab.mercurial-scm.org/D6479">[1]</a>. Also, the patch<a href="https://phab.mercurial-scm.org/D6448">[2]</a> which added documentation on <code class="language-plaintext highlighter-rouge">internals.mergestate</code> got merged too.</p>
 
 </p>
     -->
