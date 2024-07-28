@@ -68,6 +68,7 @@
 	}
 	body {
 		@apply bg-background text-foreground text-lg;
+		zoom: 1.2;
 	}
 	p {
 		@apply text-lg;
