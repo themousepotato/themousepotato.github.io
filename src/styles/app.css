@@ -65,12 +65,9 @@
 @layer base {
 	* {
 		@apply border-border;
+		@apply text-lg;
 	}
 	body {
-		@apply bg-background text-foreground text-lg;
-		zoom: 1.2;
-	}
-	p {
-		@apply text-lg;
+		@apply bg-background text-foreground;
 	}
 }
