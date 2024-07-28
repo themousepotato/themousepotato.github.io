@@ -13,7 +13,7 @@ const { articleDate, description, ogImage, title } = Astro.props
 const titleSeparator = '•'
 const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
-const socialImageURL = new URL(ogImage ? ogImage : '/social-card.png', Astro.url).href
+const socialImageURL = new URL(ogImage ? ogImage : '/thumbnail.png', Astro.url).href
 ---
 
 <meta charset='utf-8' />
