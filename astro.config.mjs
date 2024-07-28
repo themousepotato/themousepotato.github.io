@@ -8,6 +8,7 @@ import rehypeExternalLinks from 'rehype-external-links'
 import expressiveCode from 'astro-expressive-code'
 import { expressiveCodeOptions } from './src/site.config'
 import icon from 'astro-icon'
+import partytown from '@astrojs/partytown'
 
 
 // https://astro.build/config
@@ -20,7 +21,12 @@ export default defineConfig({
 		}),
 		sitemap(),
 		mdx(),
-		icon()
+		icon(),
+		partytown({
+			config: {
+			  forward: ["dataLayer.push"],
+			},
+		}),
 	],
 	markdown: {
 		remarkPlugins: [remarkUnwrapImages, remarkReadingTime],
