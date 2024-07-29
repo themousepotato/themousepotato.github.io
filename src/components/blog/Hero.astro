@@ -69,10 +69,8 @@ const dateTimeOptions: Intl.DateTimeFormatOptions = {
 						class="inline-block before:content-['#'] hover:underline hover:underline-offset-4"
 						data-pagefind-filter='tag'
 						href={`/tags/${tag}/`}
-					>
-						{tag}
-					</a>
-					{i < data.tags.length - 1 && ', '}
+					>{tag}</a>
+					{i < data.tags.length - 1 && ' '}
 				</div>
 			))}
 		</div>
