@@ -47,23 +47,7 @@ const paginationProps = {
 
 <PageLayout meta={meta}>
 	<div class='w-full'>
-		<Button href='/blog' style='button'>
-			<svg
-				xmlns='http://www.w3.org/2000/svg'
-				width="28" 
-				height="28" 
-				viewBox="0 0 24 24" 
-				fill="none" 
-				stroke="currentColor" 
-				stroke-width="1.5" 
-				stroke-linecap="round" 
-				stroke-linejoin="round" 
-				slot='icon-before'>
-				<path d="M8.24 11L15 6V9c4.93 0 6 4.79 6 9 0 0-1.73-5-6-5v3ZM9 6L3.39 10.22a1 1 0 0 0 0 1.56L9 16" />
-			</svg>
-		</Button>
-
-		<h1 class='mb-6 mt-5 text-2xl font-bold'>Blog</h1>
+		<h1 class='mb-6 mt-2 text-2xl font-bold'>Blog</h1>
 		{page.data.length === 0 && <p>No posts yet.</p>}
 
 		{
