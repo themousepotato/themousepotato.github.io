@@ -87,3 +87,13 @@ const socialImageURL = new URL(ogImage ? ogImage : '/thumbnail.png', Astro.url).
 <link href='/rss.xml' rel='alternate' title={siteConfig.title} type='application/rss+xml' />
 
 <meta content={Astro.generator} name='generator' />
+
+<!-- Google tag (gtag.js) -->
+<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-5Z002R3PSK"></script>
+
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ window.dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-5Z002R3PSK');
+</script>
