@@ -5,7 +5,7 @@ import PostPreview from '@/components/blog/PostPreview.astro'
 import Label from '../components/Label.astro'
 
 import { Image } from 'astro:assets'
-import profilePic from '../assets/navaneeth.jpeg'
+import profilePic from '../assets/navaneeth.png'
 
 import { getAllPosts, sortMDByDate } from '@/utils'
 
@@ -29,7 +29,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 				<div class='max-w-md text-center md:text-left'>
 					<h1 class='text-3xl'><span class='font-bold text-3xl'>Navaneeth</span> Suresh</h1>
 					<p class='text-muted-foreground'>
-						I am a software engineer, working primarily on backend systems.
+						I am a software engineer and builder.
 					</p>
 					<div class='flex justify-center md:justify-start items-center gap-x-4 mt-4'>
 						<Label as='a' href='mailto:navaneeths1998@gmail.com' target='_blank'>
